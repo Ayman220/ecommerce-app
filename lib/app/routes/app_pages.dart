@@ -12,6 +12,11 @@ import 'package:ecommerce_app/app/modules/checkout/bindings/checkout_binding.dar
 import 'package:ecommerce_app/app/modules/checkout/views/checkout_view.dart';
 import 'package:ecommerce_app/app/modules/orders/bindings/orders_binding.dart';
 import 'package:ecommerce_app/app/modules/orders/views/orders_view.dart';
+import 'package:ecommerce_app/app/modules/profile/bindings/profile_binding.dart';
+import 'package:ecommerce_app/app/modules/profile/views/profile_view.dart';
+import 'package:ecommerce_app/app/modules/profile/views/address_edit_view.dart';
+import 'package:ecommerce_app/app/modules/wishlist/bindings/wishlist_binding.dart';
+import 'package:ecommerce_app/app/modules/wishlist/views/wishlist_view.dart';
 
 part 'app_routes.dart';
 
@@ -53,6 +58,21 @@ class AppPages {
       name: Routes.orders,
       page: () => const OrdersView(),
       binding: OrdersBinding(),
+    ),
+    GetPage(
+      name: Routes.profile,
+      page: () => const ProfileView(),
+      binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: Routes.addressEdit,
+      page: () => const AddressEditView(),
+      binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: Routes.wishlist,
+      page: () => const WishlistView(),
+      binding: WishlistBinding(),
     ),
   ];
 }

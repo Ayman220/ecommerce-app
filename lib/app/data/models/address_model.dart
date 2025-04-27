@@ -119,12 +119,23 @@ class AddressModel {
 
   // Get full address as a formatted string
   String get formattedAddress {
-    final parts = [
-      addressLine1,
-      if (addressLine2 != null && addressLine2!.isNotEmpty) addressLine2,
-      '$city, $state $postalCode',
-      country,
-    ];
-    return parts.join(', ');
+    final buffer = StringBuffer();
+    buffer.write(addressLine1);
+    
+    if (addressLine2 != null && addressLine2!.isNotEmpty) {
+      buffer.write(', $addressLine2');
+    }
+    
+    buffer.write(', $city');
+    
+    if (postalCode.isNotEmpty) {
+      buffer.write(', $state $postalCode');
+    } else {
+      buffer.write(', $state');
+    }
+    
+    buffer.write(', $country');
+    
+    return buffer.toString();
   }
 }

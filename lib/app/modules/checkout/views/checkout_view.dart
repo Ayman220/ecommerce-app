@@ -79,16 +79,35 @@ class CheckoutView extends GetView<CheckoutController> {
           final isActive = controller.currentStep.value >= index;
           final isLast = index == controller.steps.length - 1;
 
+          // Get appropriate icon for each step
+          IconData stepIcon;
+          switch (index) {
+            case 0:
+              stepIcon = Icons.shopping_cart;
+              break;
+            case 1:
+              stepIcon = Icons.local_shipping;
+              break;
+            case 2:
+              stepIcon = Icons.payment;
+              break;
+            case 3:
+              stepIcon = Icons.receipt_long;
+              break;
+            default:
+              stepIcon = Icons.circle;
+          }
+
           return Expanded(
             child: Row(
               children: [
-                // Circle indicator
+                // Circle indicator with icon
                 Expanded(
                   child: Column(
                     children: [
                       Container(
-                        width: 24,
-                        height: 24,
+                        width: 36,
+                        height: 36,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: isActive
@@ -96,24 +115,24 @@ class CheckoutView extends GetView<CheckoutController> {
                               : Colors.grey[300],
                         ),
                         child: Center(
-                          child: Text(
-                            '${index + 1}',
-                            style: TextStyle(
-                              color: isActive ? Colors.white : Colors.grey,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
+                          child: Icon(
+                            stepIcon,
+                            color: isActive ? Colors.white : Colors.grey,
+                            size: 18,
                           ),
                         ),
                       ),
                       const SizedBox(height: 4),
+                      // Optional: Keep a small text label for clarity
                       Text(
-                        controller.steps[index],
+                        _getStepLabel(index),
                         style: TextStyle(
                           color: isActive
                               ? Get.theme.colorScheme.primary
                               : Colors.grey,
-                          fontSize: 12,
+                          fontSize: 10,
+                          fontWeight:
+                              isActive ? FontWeight.bold : FontWeight.normal,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -137,6 +156,22 @@ class CheckoutView extends GetView<CheckoutController> {
         }),
       ),
     );
+  }
+
+  // Helper method to get step labels
+  String _getStepLabel(int index) {
+    switch (index) {
+      case 0:
+        return 'Cart';
+      case 1:
+        return 'Shipping';
+      case 2:
+        return 'Payment';
+      case 3:
+        return 'Summary';
+      default:
+        return '';
+    }
   }
 
   Widget _buildCartStep() {
@@ -249,11 +284,23 @@ class CheckoutView extends GetView<CheckoutController> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Saved Addresses',
-                style: Get.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Saved Addresses',
+                    style: Get.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      controller.clearShippingForm();
+                      controller.selectedAddressId.value = '';
+                    },
+                    child: const Text('Enter New Address'),
+                  )
+                ],
               ),
               const SizedBox(height: 16),
               ListView.separated(
@@ -272,180 +319,226 @@ class CheckoutView extends GetView<CheckoutController> {
         }),
 
         // New address form or edit existing address
-        Text(
-          controller.selectedAddressId.value.isEmpty
-              ? 'Add New Address'
-              : 'Delivery Address',
-          style: Get.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 16),
+        Obx(() {
+          // If an address is selected from saved addresses and we are not adding a new one,
+          // don't show the form
+          if (controller.selectedAddressId.value.isNotEmpty &&
+              !controller.isAddingNewAddress.value) {
+            return const SizedBox.shrink();
+          }
 
-        Form(
-          key: controller.shippingFormKey,
-          child: Column(
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Full name
-              TextFormField(
-                controller: controller.fullNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Full Name',
-                  hintText: 'Enter your full name',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your full name';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-
-              // Phone
-              TextFormField(
-                controller: controller.phoneController,
-                decoration: const InputDecoration(
-                  labelText: 'Phone Number',
-                  hintText: 'Enter your phone number',
-                ),
-                keyboardType: TextInputType.phone,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your phone number';
-                  }
-                  // Remove any non-digit characters for validation
-                  final digitsOnly = value.replaceAll(RegExp(r'\D'), '');
-                  // Check if the phone number has a reasonable length (between 7 and 15 digits)
-                  if (digitsOnly.length < 7 || digitsOnly.length > 15) {
-                    return 'Please enter a valid phone number';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-
-              // Address line 1
-              TextFormField(
-                controller: controller.addressLine1Controller,
-                decoration: const InputDecoration(
-                  labelText: 'Address Line 1',
-                  hintText: 'Enter your street address',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your street address';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-
-              // Address line 2 (optional)
-              TextFormField(
-                controller: controller.addressLine2Controller,
-                decoration: const InputDecoration(
-                  labelText: 'Address Line 2 (Optional)',
-                  hintText: 'Apartment, suite, unit, building, floor, etc.',
+              Text(
+                controller.selectedAddressId.value.isEmpty
+                    ? 'Add New Address'
+                    : 'Edit Address',
+                style: Get.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 16),
-
-              // City
-              TextFormField(
-                controller: controller.cityController,
-                decoration: const InputDecoration(
-                  labelText: 'City',
-                  hintText: 'Enter your city',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your city';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-
-              // Row for State and Postal Code
-              Row(
-                children: [
-                  // State
-                  Expanded(
-                    child: TextFormField(
-                      controller: controller.stateController,
+              Form(
+                key: controller.shippingFormKey,
+                child: Column(
+                  children: [
+                    // Full name
+                    TextFormField(
+                      controller: controller.fullNameController,
                       decoration: const InputDecoration(
-                        labelText: 'State/Province',
-                        hintText: 'Enter your state',
+                        labelText: 'Full Name',
+                        hintText: 'Enter your full name',
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your state';
+                          return 'Please enter your full name';
                         }
                         return null;
                       },
                     ),
-                  ),
-                  const SizedBox(width: 16),
+                    const SizedBox(height: 16),
 
-                  // Postal code
-                  Expanded(
-                    child: TextFormField(
-                      controller: controller.postalCodeController,
+                    // Phone
+                    TextFormField(
+                      controller: controller.phoneController,
                       decoration: const InputDecoration(
-                        labelText: 'Postal Code',
-                        hintText: 'Enter postal code',
+                        labelText: 'Phone Number',
+                        hintText: 'Enter your phone number',
                       ),
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.phone,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter postal code';
+                          return 'Please enter your phone number';
+                        }
+                        // Remove any non-digit characters for validation
+                        final digitsOnly = value.replaceAll(RegExp(r'\D'), '');
+                        // Check if the phone number has a reasonable length (between 7 and 15 digits)
+                        if (digitsOnly.length < 7 || digitsOnly.length > 15) {
+                          return 'Please enter a valid phone number';
                         }
                         return null;
                       },
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
-              // Country
-              TextFormField(
-                controller: controller.countryController,
-                decoration: const InputDecoration(
-                  labelText: 'Country',
-                  hintText: 'Enter your country',
+                    // Address line 1
+                    TextFormField(
+                      controller: controller.addressLine1Controller,
+                      decoration: const InputDecoration(
+                        labelText: 'Address Line 1',
+                        hintText: 'Enter your street address',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your street address';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Address line 2 (optional)
+                    TextFormField(
+                      controller: controller.addressLine2Controller,
+                      decoration: const InputDecoration(
+                        labelText: 'Address Line 2 (Optional)',
+                        hintText:
+                            'Apartment, suite, unit, building, floor, etc.',
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // City
+                    TextFormField(
+                      controller: controller.cityController,
+                      decoration: const InputDecoration(
+                        labelText: 'City',
+                        hintText: 'Enter your city',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your city';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Row for State and Postal Code
+                    Row(
+                      children: [
+                        // State
+                        Expanded(
+                          child: TextFormField(
+                            controller: controller.stateController,
+                            decoration: const InputDecoration(
+                              labelText: 'State/Province',
+                              hintText: 'Enter your state',
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your state';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+
+                        // Postal code
+                        Expanded(
+                          child: TextFormField(
+                            controller: controller.postalCodeController,
+                            decoration: const InputDecoration(
+                              labelText: 'Postal Code',
+                              hintText: 'Enter postal code',
+                            ),
+                            keyboardType: TextInputType.text,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Country dropdown
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey[400]!),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: controller.selectedCountryCode.value,
+                            isExpanded: true,
+                            hint: const Text("Select Country"),
+                            items: controller.countries.map((country) {
+                              return DropdownMenuItem<String>(
+                                value: country.countryCode,
+                                child: Row(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(2),
+                                      child: SizedBox(
+                                        height: 16,
+                                        width: 24,
+                                        child: Text(country.flagEmoji),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        country.name,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (String? countryCode) {
+                              if (countryCode != null) {
+                                controller.selectedCountryCode.value =
+                                    countryCode;
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Save address checkbox
+                    Obx(() => CheckboxListTile(
+                          title: const Text('Save this address for future use'),
+                          value: controller.saveAddress.value,
+                          onChanged: (value) {
+                            controller.saveAddress.value = value ?? false;
+                          },
+                          contentPadding: EdgeInsets.zero,
+                          controlAffinity: ListTileControlAffinity.leading,
+                        )),
+                    const SizedBox(height: 8),
+
+                    // Set as default checkbox
+                    Obx(() => CheckboxListTile(
+                          title: const Text('Set as my default address'),
+                          value: controller.setAsDefault.value,
+                          onChanged: (value) {
+                            controller.setAsDefault.value = value ?? false;
+                          },
+                          contentPadding: EdgeInsets.zero,
+                          controlAffinity: ListTileControlAffinity.leading,
+                        )),
+                  ],
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your country';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 24),
-
-              // Save address checkbox
-              CheckboxListTile(
-                title: const Text('Save this address for future use'),
-                value: true,
-                onChanged: (value) {},
-                contentPadding: EdgeInsets.zero,
-                controlAffinity: ListTileControlAffinity.leading,
-              ),
-              const SizedBox(height: 8),
-
-              // Set as default checkbox
-              CheckboxListTile(
-                title: const Text('Set as my default address'),
-                value: false,
-                onChanged: (value) {},
-                contentPadding: EdgeInsets.zero,
-                controlAffinity: ListTileControlAffinity.leading,
               ),
             ],
-          ),
-        ),
+          );
+        }),
       ],
     );
   }
@@ -770,19 +863,49 @@ class CheckoutView extends GetView<CheckoutController> {
           color: isSelected
               ? Get.theme.colorScheme.primary
               : Get.theme.colorScheme.onSurface.withAlpha((0.1 * 255).toInt()),
+          width: isSelected ? 2 : 1,
         ),
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(8),
+        color: isSelected
+            ? Get.theme.colorScheme.primary.withOpacity(0.05)
+            : Colors.transparent,
       ),
       child: RadioListTile<String>(
-        title: Text(
-          address.fullName,
-          style: Get.textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w500,
-          ),
+        title: Row(
+          children: [
+            Text(
+              address.fullName,
+              style: Get.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            if (address.isDefault) ...[
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Get.theme.colorScheme.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  'Default',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Get.theme.colorScheme.primary,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ],
         ),
-        subtitle: Text(
-          address.formattedAddress,
-          style: Get.textTheme.bodySmall,
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 4),
+            Text(address.phone),
+            Text(address.formattedAddress),
+          ],
         ),
         value: address.id,
         groupValue: controller.selectedAddressId.value,
@@ -792,24 +915,14 @@ class CheckoutView extends GetView<CheckoutController> {
           }
         },
         activeColor: Get.theme.colorScheme.primary,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        dense: true,
-        secondary: address.isDefault
-            ? Chip(
-                label: const Text('Default'),
-                backgroundColor: Get.theme.colorScheme.primary
-                    .withAlpha((0.1 * 255).toInt()),
-                labelStyle: TextStyle(
-                  fontSize: 12,
-                  color: Get.theme.colorScheme.primary,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                padding: EdgeInsets.zero,
-              )
-            : null,
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        dense: false,
+        secondary: IconButton(
+          icon: const Icon(Icons.edit_outlined),
+          onPressed: () => controller.editAddress(address),
+          tooltip: 'Edit Address',
+        ),
       ),
     );
   }

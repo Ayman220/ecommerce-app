@@ -112,16 +112,16 @@ class HomeView extends GetView<HomeController> {
             leading: const Icon(Icons.person_outline),
             title: const Text('My Profile'),
             onTap: () {
-              Get.back();
-              // Navigate to profile screen
+              Get.back(); // Close the drawer
+              Get.toNamed(Routes.profile);
             },
           ),
           ListTile(
             leading: const Icon(Icons.favorite_border),
             title: const Text('Wishlist'),
             onTap: () {
-              Get.back();
-              // Navigate to wishlist screen
+              Get.back(); // Close the drawer
+              Get.toNamed(Routes.wishlist);
             },
           ),
           ListTile(

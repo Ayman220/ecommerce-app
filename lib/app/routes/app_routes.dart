@@ -9,4 +9,7 @@ abstract class Routes {
   static const checkout = '/checkout';
   static const orders = '/orders';
   static const orderDetail = '/order-detail';
+  static const profile = '/profile';
+  static const addressEdit = '/address-edit';
+  static const wishlist = '/wishlist'; // Add this line
 }

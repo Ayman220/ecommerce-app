@@ -4,6 +4,7 @@ import 'package:ecommerce_app/app/components/buttons/primary_button.dart';
 import 'package:ecommerce_app/app/components/buttons/secondary_button.dart';
 import 'package:ecommerce_app/app/data/models/review_model.dart';
 import 'package:ecommerce_app/app/modules/product/controllers/product_controller.dart';
+import 'package:ecommerce_app/app/modules/wishlist/controllers/wishlist_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
@@ -148,7 +149,33 @@ class ProductDetailView extends GetView<ProductController> {
                 ? Colors.red 
                 : null,
           )),
-          onPressed: controller.toggleFavorite,
+          onPressed: () {
+            final product = controller.product.value;
+            final productId = controller.productId ?? '';
+            
+            if (product != null && productId.isNotEmpty) {
+              // Create product data for wishlist
+              final productData = {
+                'name': product.name,
+                'images': product.imageUrls,
+                'price': product.price,
+                'discountedPrice': product.isOnSale ? product.currentPrice : null,
+                'isAvailable': product.isInStock,
+              };
+              
+              // Try to find the wishlist controller
+              try {
+                final wishlistController = Get.find<WishlistController>();
+                wishlistController.toggleWishlistStatus(productId, productData);
+                // Update local favorite state to match
+                controller.toggleFavorite();
+              } catch (e) {
+                // If wishlist controller not found, use the built-in toggle
+                controller.toggleFavorite();
+              }
+            }
+          },
+          tooltip: 'Add to Wishlist',
         ),
       ],
     );

@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:country_picker/country_picker.dart';
+import 'package:country_picker/src/country.dart';
 import 'package:ecommerce_app/app/components/notifications/custom_toast.dart';
 import 'package:ecommerce_app/app/data/models/address_model.dart';
 import 'package:ecommerce_app/app/data/models/cart_item_model.dart';
@@ -46,6 +48,11 @@ class CheckoutController extends GetxController {
   final RxDouble shipping = 0.0.obs;
   final RxDouble tax = 0.0.obs;
   final RxDouble total = 0.0.obs;
+  final RxBool isAddingNewAddress = false.obs;
+  final RxBool saveAddress = true.obs;
+  final RxBool setAsDefault = false.obs;
+  final RxString selectedCountryCode = 'AE'.obs; // Default to UAE
+  List<Country> countries = [];
   
   // Steps
   final List<String> steps = [
@@ -58,6 +65,8 @@ class CheckoutController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    loadCountries();
+    loadSavedAddresses();
     loadCheckoutData();
   }
   
@@ -247,13 +256,32 @@ class CheckoutController extends GetxController {
   
   void selectAddress(String addressId) {
     selectedAddressId.value = addressId;
+    isAddingNewAddress.value = false;
     
-    final selected = savedAddresses.firstWhere(
-      (addr) => addr.id == addressId,
-      orElse: () => AddressModel.empty(),
-    );
+    // Populate form with selected address data
+    final address = savedAddresses.firstWhere((addr) => addr.id == addressId);
+    fullNameController.text = address.fullName;
+    phoneController.text = address.phone;
+    addressLine1Controller.text = address.addressLine1;
+    addressLine2Controller.text = address.addressLine2 ?? '';
+    cityController.text = address.city;
+    stateController.text = address.state;
+    postalCodeController.text = address.postalCode;
     
-    _populateAddressForm(selected);
+    // Find matching country by name
+    try {
+      final matchingCountry = countries.firstWhere(
+        (c) => c.name.toLowerCase() == address.country.toLowerCase(),
+        orElse: () => countries.firstWhere(
+          (c) => c.countryCode == 'AE',
+          orElse: () => countries.first,
+        ),
+      );
+      selectedCountryCode.value = matchingCountry.countryCode;
+    } catch (e) {
+      // Default to UAE if there's any issue
+      selectedCountryCode.value = 'AE';
+    }
   }
   
   void selectPaymentMethod(String method) {
@@ -271,114 +299,25 @@ class CheckoutController extends GetxController {
     return true; // Cash on delivery doesn't need validation
   }
   
-  // Save the address if it's new
-  Future<void> saveAddress(bool setAsDefault) async {
-    final User? currentUser = _authService.currentUser;
-    if (currentUser == null) return;
-    
-    try {
-      // Check if we're editing an existing address
-      if (selectedAddressId.value.isNotEmpty) {
-        // Only update if set as default
-        if (setAsDefault) {
-          await _setAddressAsDefault(selectedAddressId.value);
-        }
-        return;
-      }
-      
-      // Create new address
-      final newAddress = AddressModel(
-        id: const Uuid().v4(),
-        fullName: fullNameController.text,
-        phone: phoneController.text,
-        addressLine1: addressLine1Controller.text,
-        addressLine2: addressLine2Controller.text.isEmpty
-            ? null
-            : addressLine2Controller.text,
-        city: cityController.text,
-        state: stateController.text,
-        postalCode: postalCodeController.text,
-        country: countryController.text,
-        isDefault: setAsDefault,
-      );
-      
-      // Add to Firestore
-      await _firestore
-          .collection('users')
-          .doc(currentUser.uid)
-          .collection('addresses')
-          .doc(newAddress.id)
-          .set(newAddress.toMap());
-          
-      // If set as default, update other addresses
-      if (setAsDefault) {
-        await _setAddressAsDefault(newAddress.id);
-      }
-      
-      // Update the UI
-      savedAddresses.add(newAddress);
-      selectedAddressId.value = newAddress.id;
-      
-      CustomToast.success('Address saved');
-    } catch (e) {
-      CustomToast.error('Failed to save address');
-    }
-  }
-  
-  Future<void> _setAddressAsDefault(String addressId) async {
-    final User? currentUser = _authService.currentUser;
-    if (currentUser == null) return;
-    
-    final batch = _firestore.batch();
-    
-    // Set all addresses to not default
-    for (final address in savedAddresses) {
-      if (address.id != addressId) {
-        batch.update(
-          _firestore
-              .collection('users')
-              .doc(currentUser.uid)
-              .collection('addresses')
-              .doc(address.id),
-          {'isDefault': false}
-        );
-      }
-    }
-    
-    // Set the selected address as default
-    batch.update(
-      _firestore
-          .collection('users')
-          .doc(currentUser.uid)
-          .collection('addresses')
-          .doc(addressId),
-      {'isDefault': true}
-    );
-    
-    await batch.commit();
-    
-    // Update local state
-    for (int i = 0; i < savedAddresses.length; i++) {
-      savedAddresses[i] = savedAddresses[i].copyWith(
-        isDefault: savedAddresses[i].id == addressId
-      );
-    }
-  }
-  
   // Next step
   void nextStep() {
-    if (currentStep.value < steps.length - 1) {
-      // Validate current step before proceeding
-      if (currentStep.value == 1 && !validateShippingForm()) {
-        CustomToast.error('Please fill in all required shipping fields');
-        return;
+    // If this is the shipping step, handle address saving before proceeding
+    if (currentStep.value == 1) {
+      if (selectedAddressId.value.isEmpty || isAddingNewAddress.value) {
+        // Validate form before proceeding
+        if (shippingFormKey.currentState?.validate() ?? false) {
+          // Save address if requested
+          if (saveAddress.value) {
+            saveShippingAddress();
+          }
+          currentStep.value++;
+        }
+      } else {
+        // If using existing address, just proceed
+        currentStep.value++;
       }
-      
-      if (currentStep.value == 2 && !validatePaymentForm()) {
-        CustomToast.error('Please fill in all required payment fields');
-        return;
-      }
-      
+    } else {
+      // For other steps, just proceed or validate as needed
       currentStep.value++;
     }
   }
@@ -403,6 +342,12 @@ class CheckoutController extends GetxController {
     try {
       isProcessing.value = true;
       
+      // Get selected country name from country code
+      final selectedCountry = countries.firstWhere(
+        (c) => c.countryCode == selectedCountryCode.value,
+        orElse: () => countries.first,
+      );
+      
       // Create shipping address
       final shippingAddress = AddressModel(
         id: selectedAddressId.value.isNotEmpty
@@ -417,7 +362,7 @@ class CheckoutController extends GetxController {
         city: cityController.text,
         state: stateController.text,
         postalCode: postalCodeController.text,
-        country: countryController.text,
+        country: selectedCountry.name, // Use the name from the country object
         isDefault: false,
       );
       
@@ -563,6 +508,155 @@ class CheckoutController extends GetxController {
       CustomToast.error('Failed to place order: ${e.toString()}');
     } finally {
       isProcessing.value = false;
+    }
+  }
+  
+  // Load countries from the country_picker package
+  void loadCountries() {
+    // Get all countries from CountryService
+    countries = CountryService().getAll();
+    
+    // Set default country to UAE (or your preferred default)
+    if (countries.isNotEmpty) {
+      try {
+        // Find UAE in the list
+        selectedCountryCode.value = 'AE';
+      } catch (e) {
+        // If UAE is not found for some reason, use the first country
+        if (countries.isNotEmpty) {
+          selectedCountryCode.value = countries.first.countryCode;
+        }
+      }
+    }
+  }
+  
+  // Load user's saved addresses
+  Future<void> loadSavedAddresses() async {
+    try {
+      isLoading.value = true;
+      
+      // Check if user is logged in
+      final user = _authService.currentUser;
+      if (user == null) {
+        return;
+      }
+      
+      // Get addresses from Firestore
+      final snapshot = await _firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('addresses')
+          .get();
+          
+      final loadedAddresses = snapshot.docs
+          .map((doc) => AddressModel.fromFirestore(doc))
+          .toList();
+          
+      savedAddresses.value = loadedAddresses;
+      
+      // Select default address if available
+      final defaultAddress = savedAddresses.firstWhereOrNull((addr) => addr.isDefault);
+      if (defaultAddress != null) {
+        selectAddress(defaultAddress.id);
+      }
+    } catch (e) {
+      print('Error loading addresses: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+  
+  // Edit an existing address
+  void editAddress(AddressModel address) {
+    selectAddress(address.id);
+    isAddingNewAddress.value = true;
+  }
+  
+  // Clear shipping form for new address
+  void clearShippingForm() {
+    fullNameController.clear();
+    phoneController.clear();
+    addressLine1Controller.clear();
+    addressLine2Controller.clear();
+    cityController.clear();
+    stateController.clear();
+    postalCodeController.clear();
+    selectedCountryCode.value = 'AE'; // Default to UAE
+    saveAddress.value = true;
+    setAsDefault.value = savedAddresses.isEmpty; // Set default if first address
+    isAddingNewAddress.value = true;
+  }
+  
+  // Save the current shipping address
+  Future<void> saveShippingAddress() async {
+    final user = _authService.currentUser;
+    if (user == null) return;
+    
+    try {
+      // Get country name from selected country code
+      final selectedCountry = countries.firstWhere(
+        (c) => c.countryCode == selectedCountryCode.value,
+        orElse: () => countries.first,
+      );
+      
+      String addressId;
+      bool isUpdating = selectedAddressId.value.isNotEmpty;
+      
+      if (isUpdating) {
+        addressId = selectedAddressId.value;
+      } else {
+        addressId = const Uuid().v4();
+      }
+      
+      // Create address model
+      final addressData = AddressModel(
+        id: addressId,
+        fullName: fullNameController.text.trim(),
+        phone: phoneController.text.trim(),
+        addressLine1: addressLine1Controller.text.trim(),
+        addressLine2: addressLine2Controller.text.trim().isNotEmpty 
+            ? addressLine2Controller.text.trim() 
+            : null,
+        city: cityController.text.trim(),
+        state: stateController.text.trim(),
+        postalCode: postalCodeController.text.trim(),
+        country: selectedCountry.name,
+        isDefault: setAsDefault.value,
+      );
+      
+      // If setting as default, update other addresses
+      if (setAsDefault.value) {
+        await _updateDefaultAddressStatus(user.uid, addressId);
+      }
+      
+      // Save to Firestore
+      await _firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('addresses')
+          .doc(addressId)
+          .set(addressData.toMap());
+          
+      // Refresh addresses list
+      await loadSavedAddresses();
+      
+    } catch (e) {
+      print('Error saving address: $e');
+    }
+  }
+  
+  // Helper to update default status
+  Future<void> _updateDefaultAddressStatus(String userId, String exceptAddressId) async {
+    final snapshot = await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('addresses')
+        .get();
+        
+    for (final doc in snapshot.docs) {
+      if (doc.id != exceptAddressId) {
+        await doc.reference.update({'isDefault': false});
+      }
     }
   }
 }
