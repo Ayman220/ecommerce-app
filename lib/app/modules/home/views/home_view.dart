@@ -128,8 +128,8 @@ class HomeView extends GetView<HomeController> {
             leading: const Icon(Icons.settings_outlined),
             title: const Text('Settings'),
             onTap: () {
-              Get.back();
-              // Navigate to settings screen
+              Get.back(); // Close the drawer
+              Get.toNamed(Routes.settings);
             },
           ),
           const Divider(),

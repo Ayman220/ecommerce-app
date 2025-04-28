@@ -17,6 +17,8 @@ import 'package:ecommerce_app/app/modules/profile/views/profile_view.dart';
 import 'package:ecommerce_app/app/modules/profile/views/address_edit_view.dart';
 import 'package:ecommerce_app/app/modules/wishlist/bindings/wishlist_binding.dart';
 import 'package:ecommerce_app/app/modules/wishlist/views/wishlist_view.dart';
+import 'package:ecommerce_app/app/modules/settings/bindings/settings_binding.dart';
+import 'package:ecommerce_app/app/modules/settings/views/settings_view.dart';
 
 part 'app_routes.dart';
 
@@ -73,6 +75,11 @@ class AppPages {
       name: Routes.wishlist,
       page: () => const WishlistView(),
       binding: WishlistBinding(),
+    ),
+    GetPage(
+      name: Routes.settings,
+      page: () => const SettingsView(),
+      binding: SettingsBinding(),
     ),
   ];
 }
