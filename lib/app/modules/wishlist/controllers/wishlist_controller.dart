@@ -117,7 +117,6 @@ class WishlistController extends GetxController {
           
       return docSnapshot.exists;
     } catch (e) {
-      print('Error checking wishlist status: ${e.toString()}');
       return false;
     }
   }

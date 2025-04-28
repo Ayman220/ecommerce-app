@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/app/components/buttons/primary_button.dart';
 import 'package:ecommerce_app/app/components/buttons/secondary_button.dart';
+import 'package:ecommerce_app/app/components/loading_indicator.dart';
 import 'package:ecommerce_app/app/data/models/address_model.dart';
 import 'package:ecommerce_app/app/modules/checkout/controllers/checkout_controller.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class CheckoutView extends GetView<CheckoutController> {
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(
-            child: CircularProgressIndicator(strokeWidth: 2),
+            child: LoadingIndicator(),
           );
         }
 
@@ -75,6 +76,7 @@ class CheckoutView extends GetView<CheckoutController> {
         ],
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: List.generate(controller.steps.length, (index) {
           final isActive = controller.currentStep.value >= index;
           final isLast = index == controller.steps.length - 1;
@@ -98,12 +100,12 @@ class CheckoutView extends GetView<CheckoutController> {
               stepIcon = Icons.circle;
           }
 
-          return Expanded(
-            child: Row(
-              children: [
-                // Circle indicator with icon
-                Expanded(
-                  child: Column(
+          return Column(
+            children: [
+              Row(
+                children: [
+                  // Circle indicator with icon
+                  Column(
                     children: [
                       Container(
                         width: 36,
@@ -138,20 +140,23 @@ class CheckoutView extends GetView<CheckoutController> {
                       ),
                     ],
                   ),
-                ),
 
-                // Connector line
-                if (!isLast)
-                  Expanded(
-                    child: Container(
+                  // Connector line
+                  if (!isLast)
+                    const SizedBox(
+                      width: 5,
+                    ),
+                  if (!isLast)
+                    Container(
                       height: 1,
+                      width: 40,
                       color: isActive
                           ? Get.theme.colorScheme.primary
                           : Colors.grey[300],
                     ),
-                  ),
-              ],
-            ),
+                ],
+              ),
+            ],
           );
         }),
       ),
@@ -855,76 +860,89 @@ class CheckoutView extends GetView<CheckoutController> {
   }
 
   Widget _buildSavedAddressItem(AddressModel address) {
-    final isSelected = controller.selectedAddressId.value == address.id;
+    return Obx(() {
+      final isSelected = controller.selectedAddressId.value == address.id;
 
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: isSelected
-              ? Get.theme.colorScheme.primary
-              : Get.theme.colorScheme.onSurface.withAlpha((0.1 * 255).toInt()),
-          width: isSelected ? 2 : 1,
-        ),
-        borderRadius: BorderRadius.circular(8),
-        color: isSelected
-            ? Get.theme.colorScheme.primary.withOpacity(0.05)
-            : Colors.transparent,
-      ),
-      child: RadioListTile<String>(
-        title: Row(
-          children: [
-            Text(
-              address.fullName,
-              style: Get.textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+      return Material(
+        color: Colors.transparent,
+        child: ListTile(
+          onTap: () {
+            controller.selectAddress(address.id);
+          },
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: BorderSide(
+              color: isSelected
+                  ? Get.theme.colorScheme.primary
+                  : Get.theme.colorScheme.onSurface
+                      .withAlpha((0.1 * 255).toInt()),
+              width: isSelected ? 2 : 1,
             ),
-            if (address.isDefault) ...[
-              const SizedBox(width: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Get.theme.colorScheme.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
+          ),
+          tileColor: isSelected
+              ? Get.theme.colorScheme.primary.withAlpha((0.05 * 255).toInt())
+              : Colors.transparent,
+          leading: Radio<String>(
+            value: address.id,
+            groupValue: controller.selectedAddressId.value,
+            onChanged: (value) {
+              if (value != null) {
+                controller.selectAddress(value);
+              }
+            },
+            activeColor: Get.theme.colorScheme.primary,
+          ),
+          title: Row(
+            children: [
+              Expanded(
                 child: Text(
-                  'Default',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Get.theme.colorScheme.primary,
+                  address.fullName,
+                  style: Get.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
+              if (address.isDefault) ...[
+                const SizedBox(width: 8),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: Get.theme.colorScheme.primary
+                        .withAlpha((0.1 * 255).toInt()),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    'Default',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Get.theme.colorScheme.primary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 4),
+              Text(address.phone),
+              Text(address.formattedAddress),
+            ],
+          ),
+          trailing: IconButton(
+            icon: const Icon(Icons.edit_outlined),
+            onPressed: () => controller.editAddress(address),
+            tooltip: 'Edit Address',
+          ),
+          isThreeLine: true,
         ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 4),
-            Text(address.phone),
-            Text(address.formattedAddress),
-          ],
-        ),
-        value: address.id,
-        groupValue: controller.selectedAddressId.value,
-        onChanged: (value) {
-          if (value != null) {
-            controller.selectAddress(value);
-          }
-        },
-        activeColor: Get.theme.colorScheme.primary,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        dense: false,
-        secondary: IconButton(
-          icon: const Icon(Icons.edit_outlined),
-          onPressed: () => controller.editAddress(address),
-          tooltip: 'Edit Address',
-        ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildPaymentMethodSelector() {

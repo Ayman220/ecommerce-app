@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_picker/country_picker.dart';
-import 'package:country_picker/src/country.dart';
 import 'package:ecommerce_app/app/components/notifications/custom_toast.dart';
 import 'package:ecommerce_app/app/data/models/address_model.dart';
 import 'package:ecommerce_app/app/data/models/cart_item_model.dart';
@@ -560,7 +559,7 @@ class CheckoutController extends GetxController {
         selectAddress(defaultAddress.id);
       }
     } catch (e) {
-      print('Error loading addresses: $e');
+      CustomToast.error('Error loading addresses');
     } finally {
       isLoading.value = false;
     }
@@ -641,7 +640,7 @@ class CheckoutController extends GetxController {
       await loadSavedAddresses();
       
     } catch (e) {
-      print('Error saving address: $e');
+      CustomToast.error('Error saving address');
     }
   }
   
