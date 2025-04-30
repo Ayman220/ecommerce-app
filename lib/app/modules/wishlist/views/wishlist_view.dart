@@ -162,25 +162,31 @@ class WishlistView extends GetView<WishlistController> {
                 
                 // Action buttons
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    OutlinedButton.icon(
-                      onPressed: () => controller.removeFromWishlist(item.id),
-                      icon: const Icon(Icons.delete_outline, size: 18),
-                      label: const Text('REMOVE'),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        visualDensity: VisualDensity.compact,
-                        side: BorderSide(color: Colors.grey[400]!),
+                    Flexible(
+                      child: ElevatedButton.icon(
+                        onPressed: () => controller.removeFromWishlist(item.id),
+                        icon: const Icon(Icons.delete_outline, size: 16),
+                        label: const Text('Remove', style: TextStyle(fontSize: 12)),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 8),
-                    ElevatedButton.icon(
-                      onPressed: () => controller.goToProductDetail(item.productId),
-                      icon: const Icon(Icons.shopping_bag_outlined, size: 18),
-                      label: const Text('VIEW'),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        visualDensity: VisualDensity.compact,
+                    Flexible(
+                      child: ElevatedButton.icon(
+                        onPressed: () => controller.goToProductDetail(item.productId),
+                        icon: const Icon(Icons.shopping_bag_outlined, size: 16),
+                        label: const Text('View', style: TextStyle(fontSize: 12)),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
                       ),
                     ),
                   ],

@@ -1,16 +1,20 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/app/components/notifications/custom_toast.dart';
 import 'package:ecommerce_app/app/data/services/auth_service.dart';
+import 'package:ecommerce_app/app/services/theme_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class SettingsController extends GetxController {
   final AuthService _authService = Get.find<AuthService>();
+  final ThemeService _themeService = Get.find<ThemeService>();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   
   final RxBool isLoading = false.obs;
-  final RxBool isDarkMode = false.obs;
   final RxBool useSystemTheme = true.obs;
+  final RxBool isDarkMode = false.obs;
   final RxBool isNotificationsEnabled = true.obs;
   final RxString currency = 'USD'.obs;
   final RxString language = 'English'.obs;
@@ -22,6 +26,11 @@ class SettingsController extends GetxController {
   void onInit() {
     super.onInit();
     loadSettings();
+    initializeLanguage();
+    
+    // Initialize theme values from ThemeService
+    useSystemTheme.value = _themeService.useSystemTheme;
+    isDarkMode.value = _themeService.isDarkMode;
   }
   
   Future<void> loadSettings() async {
@@ -40,8 +49,6 @@ class SettingsController extends GetxController {
       if (doc.exists && doc.data() != null) {
         final data = doc.data()!;
         
-        useSystemTheme.value = data['useSystemTheme'] ?? true;
-        isDarkMode.value = data['isDarkMode'] ?? false;
         isNotificationsEnabled.value = data['isNotificationsEnabled'] ?? true;
         currency.value = data['currency'] ?? 'USD';
         language.value = data['language'] ?? 'English';
@@ -65,8 +72,6 @@ class SettingsController extends GetxController {
           .collection('settings')
           .doc('preferences')
           .set({
-            'useSystemTheme': useSystemTheme.value,
-            'isDarkMode': isDarkMode.value,
             'isNotificationsEnabled': isNotificationsEnabled.value,
             'currency': currency.value,
             'language': language.value,
@@ -74,10 +79,6 @@ class SettingsController extends GetxController {
           }, SetOptions(merge: true));
       
       CustomToast.success('Settings saved successfully');
-      
-      // Apply theme changes
-      _applyThemeChanges();
-      
     } catch (e) {
       CustomToast.error('Failed to save settings');
     } finally {
@@ -88,13 +89,13 @@ class SettingsController extends GetxController {
   void toggleDarkMode(bool value) {
     isDarkMode.value = value;
     if (!useSystemTheme.value) {
-      saveSettings();
+      _themeService.toggleDarkMode(value);
     }
   }
   
   void toggleUseSystemTheme(bool value) {
     useSystemTheme.value = value;
-    saveSettings();
+    _themeService.setUseSystemTheme(value);
   }
   
   void toggleNotifications(bool value) {
@@ -107,13 +108,34 @@ class SettingsController extends GetxController {
     saveSettings();
   }
   
-  void setLanguage(String value) {
-    language.value = value;
+  void setLanguage(String lang) {
+    language.value = lang;
+    
+    // Apply the selected language to the app
+    if (lang == 'Arabic') {
+      Get.updateLocale(const Locale('ar', 'SA'));
+    } else {
+      Get.updateLocale(const Locale('en', 'US'));
+    }
+    
+    // Save the preference
     saveSettings();
   }
   
-  void _applyThemeChanges() {
-    // Implementation for theme changes would go here
-    // This would connect to a theme service in a real app
+  void initializeLanguage() {
+    // Get system locale
+    final String systemLocale = Get.deviceLocale?.languageCode ?? 'en';
+    
+    // Set language based on system locale (only supporting English and Arabic)
+    if (systemLocale == 'ar') {
+      language.value = 'Arabic';
+      // Set app locale to Arabic
+      Get.updateLocale(const Locale('ar', 'SA'));
+    } else {
+      // Default to English for any other language
+      language.value = 'English';
+      // Set app locale to English
+      Get.updateLocale(const Locale('en', 'US'));
+    }
   }
 }

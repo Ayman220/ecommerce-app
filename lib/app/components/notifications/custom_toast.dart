@@ -75,22 +75,34 @@ class CustomToast {
     );
   }
 
-  /// Get color based on toast type
+  /// Get color based on toast type and theme mode
   static Color _getColor(ToastType type) {
+    final isDarkMode = Get.isDarkMode;
+    
     switch (type) {
       case ToastType.success:
-        return const Color(0xFF4A8B71); // Elegant green
+        return isDarkMode 
+            ? const Color(0xFF4CAF50) // Brighter green for dark mode
+            : const Color(0xFF4A8B71); // Elegant green for light mode
       case ToastType.error:
-        return const Color(0xFFB3261E); // Elegant red
+        return isDarkMode 
+            ? const Color(0xFFF44336) // Brighter red for dark mode
+            : const Color(0xFFB3261E); // Elegant red for light mode
       case ToastType.warning:
-        return const Color(0xFFDD8560); // Secondary color
+        return isDarkMode 
+            ? const Color(0xFFFF9800) // Brighter orange for dark mode
+            : const Color(0xFFDD8560); // Secondary color for light mode
       case ToastType.info:
-        return const Color(0xFF333333); // Primary color
+        return isDarkMode 
+            ? const Color(0xFF2196F3) // Blue for dark mode
+            : const Color(0xFF333333); // Dark gray for light mode
     }
   }
 
-  /// Get text color (always white for contrast)
-  static const Color _textColor = Colors.white;
+  /// Get text color based on theme mode
+  static Color _getTextColor() {
+    return Colors.white; // Keep white text for all toast types for better contrast
+  }
 
   /// Get icon based on toast type
   static IconData _getIcon(ToastType type, IconData? customIcon) {
@@ -98,7 +110,7 @@ class CustomToast {
     
     switch (type) {
       case ToastType.success:
-        return Icons.check;
+        return Icons.check_circle_outline;
       case ToastType.error:
         return Icons.error_outline;
       case ToastType.warning:
@@ -108,61 +120,91 @@ class CustomToast {
     }
   }
 
-  /// Show GetX snackbar (elegant, minimalist style)
+  /// Show GetX snackbar with theme awareness
   static void _showGetXSnackbar({
     required String message,
     required ToastType type,
     IconData? icon,
     required Duration duration,
   }) {
+    final textColor = _getTextColor();
+    final backgroundColor = _getColor(type);
+    final isDarkMode = Get.isDarkMode;
+    
+    // Adjust the opacity based on theme
+    final alpha = isDarkMode ? (0.85 * 255).toInt() : (0.95 * 255).toInt();
+    
     Get.rawSnackbar(
       messageText: Row(
         children: [
           Icon(
             _getIcon(type, icon),
-            color: _textColor,
+            color: textColor,
             size: 20,
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               message,
-              style: const TextStyle(
-                color: _textColor,
+              style: TextStyle(
+                color: textColor,
                 fontSize: 14,
                 letterSpacing: 0.3,
+                fontWeight: FontWeight.w400,
               ),
             ),
           ),
         ],
       ),
-      backgroundColor: _getColor(type).withAlpha((0.95 * 255).toInt()),
+      backgroundColor: backgroundColor.withAlpha(alpha),
       duration: duration,
-      margin: const EdgeInsets.all(12),
-      borderRadius: 4,
+      margin: EdgeInsets.symmetric(
+        horizontal: 12, 
+        vertical: isDarkMode ? 16 : 12, // More margin in dark mode
+      ),
+      borderRadius: 6, // Slightly more rounded in both modes
       isDismissible: true,
       dismissDirection: DismissDirection.horizontal,
       snackPosition: SnackPosition.TOP,
       snackStyle: SnackStyle.FLOATING,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: EdgeInsets.symmetric(
+        horizontal: 16, 
+        vertical: isDarkMode ? 14 : 12, // Slightly more padding in dark mode
+      ),
+      boxShadows: isDarkMode ? [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.3),
+          blurRadius: 10,
+          offset: const Offset(0, 3),
+        )
+      ] : [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.1),
+          blurRadius: 6,
+          offset: const Offset(0, 2),
+        )
+      ],
       barBlur: 0,
     );
   }
 
-  /// Show traditional Flutter toast
+  /// Show traditional Flutter toast with theme awareness
   static void _showFlutterToast({
     required String message,
     required ToastType type,
     required Duration duration,
     required ToastGravity gravity,
   }) {
+    final textColor = _getTextColor();
+    final backgroundColor = _getColor(type);
+    
     Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_LONG,
       gravity: gravity,
       timeInSecForIosWeb: duration.inSeconds,
-      backgroundColor: _getColor(type),
-      textColor: _textColor,
+      backgroundColor: backgroundColor,
+      textColor: textColor,
       fontSize: 14.0,
     );
   }

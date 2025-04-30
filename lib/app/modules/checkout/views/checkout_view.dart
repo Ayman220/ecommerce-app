@@ -66,7 +66,7 @@ class CheckoutView extends GetView<CheckoutController> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        // color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha((0.05 * 255).toInt()),
@@ -1189,7 +1189,7 @@ class CheckoutView extends GetView<CheckoutController> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        // color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha((0.05 * 255).toInt()),

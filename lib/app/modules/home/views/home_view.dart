@@ -155,6 +155,7 @@ class HomeView extends GetView<HomeController> {
       return ListView(
         controller: controller.scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.only(top: 10),
         children: [
           _buildHeroSlider(),
           const SizedBox(height: 24),
@@ -433,21 +434,15 @@ class HomeView extends GetView<HomeController> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: Get.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          Text(title, style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold)),
           TextButton(
             onPressed: () {
               // Navigate to all products or categories
             },
-            child: Text(
+            child: const Text(
               'See All',
-              style: TextStyle(
-                color: Theme.of(Get.context!).colorScheme.primary,
-              ),
             ),
           ),
         ],
@@ -624,7 +619,7 @@ class HomeView extends GetView<HomeController> {
                   aspectRatio: 1,
                   child: _buildProductImage(product.imageUrls[0]),
                 ),
-                
+
                 // Show rating badge if there are reviews
                 if (product.reviewCount > 0)
                   Positioned(
@@ -634,14 +629,15 @@ class HomeView extends GetView<HomeController> {
                       rating: product.rating,
                     ),
                   ),
-                
+
                 // Show discount badge if on sale
                 if (product.isOnSale)
                   Positioned(
                     top: 8,
                     left: 8,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(12),
@@ -658,7 +654,7 @@ class HomeView extends GetView<HomeController> {
                   ),
               ],
             ),
-            
+
             // Rest of the card remains the same
             Expanded(
               child: Padding(
@@ -682,7 +678,6 @@ class HomeView extends GetView<HomeController> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    
                     const Spacer(),
                     Row(
                       children: [

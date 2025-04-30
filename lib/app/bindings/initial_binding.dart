@@ -10,7 +10,7 @@ class InitialBinding implements Bindings {
     // Services
     Get.put(AuthService(), permanent: true);
     Get.put(ProductService(), permanent: true);
-    
+
     // Controllers
     Get.put(AuthController(), permanent: true);
     Get.put(CartController());

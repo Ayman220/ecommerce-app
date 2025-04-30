@@ -958,7 +958,6 @@ class ProductDetailView extends GetView<ProductController> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withAlpha((0.1 * 255).toInt()),
