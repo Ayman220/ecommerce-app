@@ -39,7 +39,7 @@ class HomeView extends GetView<HomeController> {
         if (controller.isSearching.value) {
           return CustomTextField(
             controller: controller.searchController,
-            hintText: 'Search products...',
+            hintText: 'search_products'.tr,
             prefixIcon: const Icon(Icons.search),
             suffixIcon: IconButton(
               icon: const Icon(Icons.clear),
@@ -48,7 +48,7 @@ class HomeView extends GetView<HomeController> {
             textInputAction: TextInputAction.search,
           );
         }
-        return const Text('StyleShop');
+        return Text('app_name'.tr);
       }),
       actions: [
         Obx(() {
@@ -102,7 +102,7 @@ class HomeView extends GetView<HomeController> {
         children: [
           ListTile(
             leading: const Icon(Icons.shopping_bag_outlined),
-            title: const Text('My Orders'),
+            title: Text('my_orders'.tr),
             onTap: () {
               Get.back();
               Get.toNamed(Routes.orders);
@@ -110,7 +110,7 @@ class HomeView extends GetView<HomeController> {
           ),
           ListTile(
             leading: const Icon(Icons.person_outline),
-            title: const Text('My Profile'),
+            title: Text('my_profile'.tr),
             onTap: () {
               Get.back(); // Close the drawer
               Get.toNamed(Routes.profile);
@@ -118,7 +118,7 @@ class HomeView extends GetView<HomeController> {
           ),
           ListTile(
             leading: const Icon(Icons.favorite_border),
-            title: const Text('Wishlist'),
+            title: Text('wishlist'.tr),
             onTap: () {
               Get.back(); // Close the drawer
               Get.toNamed(Routes.wishlist);
@@ -126,7 +126,7 @@ class HomeView extends GetView<HomeController> {
           ),
           ListTile(
             leading: const Icon(Icons.settings_outlined),
-            title: const Text('Settings'),
+            title: Text('settings'.tr),
             onTap: () {
               Get.back(); // Close the drawer
               Get.toNamed(Routes.settings);
@@ -135,7 +135,7 @@ class HomeView extends GetView<HomeController> {
           const Divider(),
           ListTile(
             leading: const Icon(Icons.logout, color: Colors.red),
-            title: const Text('Logout', style: TextStyle(color: Colors.red)),
+            title: Text('logout'.tr, style: const TextStyle(color: Colors.red)),
             onTap: () {
               Get.back();
               controller.logout();
@@ -159,15 +159,15 @@ class HomeView extends GetView<HomeController> {
         children: [
           _buildHeroSlider(),
           const SizedBox(height: 24),
-          _buildSectionTitle('Categories'),
+          _buildSectionTitle('categories'.tr),
           const SizedBox(height: 8),
           _buildCategoriesRow(),
           const SizedBox(height: 24),
-          _buildSectionTitle('Featured Products'),
+          _buildSectionTitle('featured_products'.tr),
           const SizedBox(height: 8),
           _buildFeaturedProductsGrid(),
           const SizedBox(height: 24),
-          _buildSectionTitle('New Arrivals'),
+          _buildSectionTitle('new_arrivals'.tr),
           const SizedBox(height: 8),
           _buildNewArrivalsGrid(),
           const SizedBox(height: 32),
@@ -216,7 +216,7 @@ class HomeView extends GetView<HomeController> {
               itemCount: 5,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               itemBuilder: (_, __) => Padding(
-                padding: const EdgeInsets.only(right: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Container(
                   width: 80,
                   decoration: BoxDecoration(
@@ -358,7 +358,7 @@ class HomeView extends GetView<HomeController> {
                                   ),
                                   if (product.isOnSale)
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                       child: Text(
                                         '\$${product.price.toStringAsFixed(2)}',
                                         style: const TextStyle(
@@ -380,9 +380,9 @@ class HomeView extends GetView<HomeController> {
                                           Theme.of(context).colorScheme.primary,
                                       borderRadius: BorderRadius.circular(4),
                                     ),
-                                    child: const Text(
-                                      'SHOP NOW',
-                                      style: TextStyle(
+                                    child: Text(
+                                      'shop_now'.tr,
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 12,
                                         fontWeight: FontWeight.bold,
@@ -408,7 +408,7 @@ class HomeView extends GetView<HomeController> {
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
-                              '${product.discountPercentage?.toInt() ?? 0}% OFF',
+                              '${product.discountPercentage?.toInt() ?? 0}% ${'off'.tr}',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 12,
@@ -434,15 +434,15 @@ class HomeView extends GetView<HomeController> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold)),
+          Text(title.tr,
+              style:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           TextButton(
             onPressed: () {
               // Navigate to all products or categories
             },
-            child: const Text(
-              'See All',
+            child: Text(
+              'see_all'.tr,
             ),
           ),
         ],
@@ -455,8 +455,8 @@ class HomeView extends GetView<HomeController> {
       height: 100,
       child: Obx(() {
         if (controller.categories.isEmpty) {
-          return const Center(
-            child: Text('No categories available'),
+          return Center(
+            child: Text('no_categories_available'.tr),
           );
         }
 
@@ -472,7 +472,7 @@ class HomeView extends GetView<HomeController> {
               onTap: () => controller.selectCategory(index),
               child: Container(
                 width: 80,
-                margin: const EdgeInsets.only(right: 12),
+                margin: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
                   color: isSelected
                       ? Theme.of(context)
@@ -531,10 +531,10 @@ class HomeView extends GetView<HomeController> {
   Widget _buildFeaturedProductsGrid() {
     return Obx(() {
       if (controller.featuredProducts.isEmpty) {
-        return const Center(
+        return Center(
           child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Text('No featured products available'),
+            padding: const EdgeInsets.all(16),
+            child: Text('no_featured_products'.tr),
           ),
         );
       }
@@ -565,10 +565,10 @@ class HomeView extends GetView<HomeController> {
   Widget _buildNewArrivalsGrid() {
     return Obx(() {
       if (controller.newArrivals.isEmpty) {
-        return const Center(
+        return Center(
           child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Text('No new arrivals available'),
+            padding: const EdgeInsets.all(16),
+            child: Text('no_new_arrivals'.tr),
           ),
         );
       }
@@ -691,7 +691,7 @@ class HomeView extends GetView<HomeController> {
                         ),
                         if (product.isOnSale)
                           Padding(
-                            padding: const EdgeInsets.only(left: 4),
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
                             child: Text(
                               '\$${product.price.toStringAsFixed(2)}',
                               style: const TextStyle(
@@ -770,7 +770,7 @@ class HomeView extends GetView<HomeController> {
               ),
               const SizedBox(height: 16),
               Text(
-                'Type at least 2 characters to search',
+                'type_at_least_two_characters'.tr,
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontSize: 16,
@@ -793,7 +793,7 @@ class HomeView extends GetView<HomeController> {
               ),
               const SizedBox(height: 16),
               Text(
-                'No products found for "${controller.searchQuery.value}"',
+                '${'no_products_found'.tr} "${controller.searchQuery.value}"',
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontSize: 16,
@@ -856,7 +856,7 @@ class HomeView extends GetView<HomeController> {
                           ),
                           if (product.isOnSale)
                             Padding(
-                              padding: const EdgeInsets.only(left: 4),
+                              padding: const EdgeInsets.symmetric(horizontal: 4),
                               child: Text(
                                 '\$${product.price.toStringAsFixed(2)}',
                                 style: const TextStyle(
@@ -907,26 +907,26 @@ class HomeView extends GetView<HomeController> {
             break;
         }
       },
-      items: const [
+      items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined),
-          activeIcon: Icon(Icons.home),
-          label: 'Home',
+          icon: const Icon(Icons.home_outlined),
+          activeIcon: const Icon(Icons.home),
+          label: 'home'.tr,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.category_outlined),
-          activeIcon: Icon(Icons.category),
-          label: 'Categories',
+          icon: const Icon(Icons.category_outlined),
+          activeIcon: const Icon(Icons.category),
+          label: 'categories'.tr,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_cart_outlined),
-          activeIcon: Icon(Icons.shopping_cart),
-          label: 'Cart',
+          icon: const Icon(Icons.shopping_cart_outlined),
+          activeIcon: const Icon(Icons.shopping_cart),
+          label: 'cart'.tr,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline),
-          activeIcon: Icon(Icons.person),
-          label: 'Account',
+          icon: const Icon(Icons.person_outline),
+          activeIcon: const Icon(Icons.person),
+          label: 'account'.tr,
         ),
       ],
     );

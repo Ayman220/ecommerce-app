@@ -22,12 +22,12 @@ class LoginView extends GetView<AuthController> {
                 children: [
                   const SizedBox(height: 40),
                   Text(
-                    'Welcome back',
+                    'welcome_back'.tr,
                     style: Theme.of(context).textTheme.displayMedium,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Sign in to your account',
+                    'sign_in'.tr,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 40),
@@ -52,7 +52,7 @@ class LoginView extends GetView<AuthController> {
   Widget _buildEmailField() {
     return CustomTextField(
       controller: controller.emailController,
-      labelText: 'Email',
+      labelText: 'email'.tr,
       prefixIcon: const Icon(Icons.email_outlined),
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
@@ -65,7 +65,7 @@ class LoginView extends GetView<AuthController> {
     return Obx(
       () => CustomTextField(
         controller: controller.passwordController,
-        labelText: 'Password',
+        labelText: 'password'.tr,
         obscureText: controller.obscureText.value,
         prefixIcon: const Icon(Icons.lock_outline),
         textInputAction: TextInputAction.done,
@@ -88,7 +88,7 @@ class LoginView extends GetView<AuthController> {
       alignment: Alignment.centerRight,
       child: TextButton(
         onPressed: () => _showForgotPasswordDialog(),
-        child: const Text('Forgot Password?'),
+        child: Text('forgot_password'.tr),
       ),
     );
   }
@@ -96,7 +96,7 @@ class LoginView extends GetView<AuthController> {
   Widget _buildSignInButton() {
     return Obx(
       () => PrimaryButton(
-        text: 'Sign In',
+        text: 'sign_in'.tr,
         onPressed: controller.signIn,
         isLoading: controller.isLoading.value,
       ),
@@ -108,12 +108,12 @@ class LoginView extends GetView<AuthController> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Don't have an account?",
+          'dont_have_account'.tr,
           style: Get.textTheme.bodyMedium,
         ),
         TextButton(
           onPressed: () => Get.toNamed(Routes.signup),
-          child: const Text('Create Account'),
+          child: Text('create_account'.tr),
         ),
       ],
     );
@@ -126,17 +126,17 @@ class LoginView extends GetView<AuthController> {
 
     Get.dialog(
       AlertDialog(
-        title: const Text('Reset Password'),
+        title: Text('reset_password'.tr),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Enter your email address and we\'ll send you a link to reset your password.',
+            Text(
+              'reset_password_instructions'.tr,
             ),
             const SizedBox(height: 16),
             CustomTextField(
               controller: resetEmailController,
-              labelText: 'Email',
+              labelText: 'email'.tr,
               prefixIcon: const Icon(Icons.email_outlined),
               keyboardType: TextInputType.emailAddress,
             ),
@@ -145,7 +145,7 @@ class LoginView extends GetView<AuthController> {
         actions: [
           TextButton(
             onPressed: () => Get.back(),
-            child: const Text('Cancel'),
+            child: Text('cancel'.tr),
           ),
           Obx(
             () => TextButton(
@@ -161,7 +161,7 @@ class LoginView extends GetView<AuthController> {
                       width: 20,
                       child: CircularProgressIndicator(),
                     )
-                  : const Text('Send Reset Link'),
+                  : Text('send_reset_link'.tr),
             ),
           ),
         ],

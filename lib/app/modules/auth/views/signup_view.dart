@@ -12,7 +12,7 @@ class SignupView extends GetView<AuthController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Account'),
+        title: Text('create_account'.tr),
         elevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).textTheme.titleLarge?.color,
@@ -26,12 +26,12 @@ class SignupView extends GetView<AuthController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Let\'s get started',
+                    'lets_get_started'.tr,
                     style: Theme.of(context).textTheme.displayMedium,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Create an account to continue shopping',
+                    'create_account_to_continue'.tr,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 32),
@@ -56,7 +56,7 @@ class SignupView extends GetView<AuthController> {
   Widget _buildNameField() {
     return CustomTextField(
       controller: controller.nameController,
-      labelText: 'Full Name',
+      labelText: 'full_name'.tr,
       prefixIcon: const Icon(Icons.person_outline),
       keyboardType: TextInputType.name,
       textCapitalization: TextCapitalization.words,
@@ -67,7 +67,7 @@ class SignupView extends GetView<AuthController> {
   Widget _buildEmailField() {
     return CustomTextField(
       controller: controller.emailController,
-      labelText: 'Email',
+      labelText: 'email'.tr,
       prefixIcon: const Icon(Icons.email_outlined),
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
@@ -81,8 +81,8 @@ class SignupView extends GetView<AuthController> {
       () => CustomTextField(
         controller: controller.passwordController,
         obscureText: controller.obscureText.value,
-        labelText: 'Password',
-        helperText: 'Password must be at least 6 characters',
+        labelText: 'password'.tr,
+        helperText: 'password_requirement'.tr,
         prefixIcon: const Icon(Icons.lock_outline),
         textInputAction: TextInputAction.done,
         autofillHints: true,
@@ -102,7 +102,7 @@ class SignupView extends GetView<AuthController> {
   Widget _buildSignUpButton() {
     return Obx(
       () => PrimaryButton(
-        text: 'Create Account',
+        text: 'create_account'.tr,
         onPressed: controller.signUp,
         isLoading: controller.isLoading.value,
       ),
@@ -114,12 +114,12 @@ class SignupView extends GetView<AuthController> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Already have an account?',
+          'already_have_account'.tr,
           style: Get.textTheme.bodyMedium,
         ),
         TextButton(
           onPressed: () => Get.back(),
-          child: const Text('Sign In'),
+          child: Text('sign_in'.tr),
         ),
       ],
     );

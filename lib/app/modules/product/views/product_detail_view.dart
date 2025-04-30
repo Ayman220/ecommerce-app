@@ -22,7 +22,7 @@ class ProductDetailView extends GetView<ProductController> {
         }
         
         if (controller.product.value == null) {
-          return const Center(child: Text('Product not available'));
+          return Center(child: Text('product_not_available'.tr));
         }
         
         return CustomScrollView(
@@ -61,7 +61,7 @@ class ProductDetailView extends GetView<ProductController> {
 
   Widget _buildLoadingShimmer() {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
+      baseColor: Theme.of(Get.context!).colorScheme.primary.withAlpha(50),
       highlightColor: Colors.grey[100]!,
       child: SingleChildScrollView(
         child: Column(
@@ -134,7 +134,7 @@ class ProductDetailView extends GetView<ProductController> {
       floating: true,
       pinned: true,
       title: Text(
-        controller.product.value?.name ?? 'Product Details',
+        controller.product.value?.name ?? 'product_details'.tr,
         style: const TextStyle(
           fontSize: 18,
         ),
@@ -175,7 +175,7 @@ class ProductDetailView extends GetView<ProductController> {
               }
             }
           },
-          tooltip: 'Add to Wishlist',
+          tooltip: 'add_to_wishlist'.tr,
         ),
       ],
     );
@@ -292,7 +292,7 @@ class ProductDetailView extends GetView<ProductController> {
               ),
               const SizedBox(width: 8),
               Text(
-                '(${product.reviewCount} reviews)',
+                '(${product.reviewCount} ${'reviews'.tr})',
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontSize: 14,
@@ -338,7 +338,7 @@ class ProductDetailView extends GetView<ProductController> {
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
-                    '${product.discountPercentage?.toInt()}% OFF',
+                    '${product.discountPercentage?.toInt()}% ${'off'.tr}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 12,
@@ -366,8 +366,8 @@ class ProductDetailView extends GetView<ProductController> {
               const SizedBox(width: 4),
               Text(
                 product.isInStock
-                    ? 'In Stock (${product.stock} available)'
-                    : 'Out of Stock',
+                    ? '${'in_stock'.tr} (${product.stock} ${'available'.tr})'
+                    : 'out_of_stock'.tr,
                 style: TextStyle(
                   color: product.isInStock
                       ? Colors.green
@@ -383,9 +383,9 @@ class ProductDetailView extends GetView<ProductController> {
             const SizedBox(height: 16),
             Row(
               children: [
-                const Text(
-                  'Quantity:',
-                  style: TextStyle(
+                Text(
+                  '${'quantity'.tr}:',
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -461,9 +461,9 @@ class ProductDetailView extends GetView<ProductController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Specifications',
-            style: TextStyle(
+          Text(
+            'specifications'.tr,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -473,9 +473,9 @@ class ProductDetailView extends GetView<ProductController> {
           
           // Sizes
           if (specs.containsKey('sizes') && specs['sizes'] is List) ...[
-            const Text(
-              'Size:',
-              style: TextStyle(
+            Text(
+              '${'size'.tr}:',
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -494,11 +494,11 @@ class ProductDetailView extends GetView<ProductController> {
                     ),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? Theme.of(Get.context!).primaryColor
+                          ? Theme.of(Get.context!).colorScheme.primary
                           : Colors.transparent,
                       border: Border.all(
                         color: isSelected
-                            ? Theme.of(Get.context!).primaryColor
+                            ? Theme.of(Get.context!).colorScheme.primary
                             : Colors.grey[300]!,
                       ),
                       borderRadius: BorderRadius.circular(4),
@@ -506,7 +506,7 @@ class ProductDetailView extends GetView<ProductController> {
                     child: Text(
                       size.toString(),
                       style: TextStyle(
-                        color: isSelected ? Colors.white : Colors.black,
+                        color: isSelected ? Theme.of(Get.context!).colorScheme.tertiary : Theme.of(Get.context!).colorScheme.primary,
                         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                       ),
                     ),
@@ -519,9 +519,9 @@ class ProductDetailView extends GetView<ProductController> {
           
           // Colors
           if (specs.containsKey('colors') && specs['colors'] is List) ...[
-            const Text(
-              'Color:',
-              style: TextStyle(
+            Text(
+              '${'color'.tr}:',
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -540,11 +540,11 @@ class ProductDetailView extends GetView<ProductController> {
                     ),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? Theme.of(Get.context!).primaryColor
+                          ? Theme.of(Get.context!).colorScheme.primary
                           : Colors.transparent,
                       border: Border.all(
                         color: isSelected
-                            ? Theme.of(Get.context!).primaryColor
+                            ? Theme.of(Get.context!).colorScheme.primary
                             : Colors.grey[300]!,
                       ),
                       borderRadius: BorderRadius.circular(4),
@@ -552,7 +552,7 @@ class ProductDetailView extends GetView<ProductController> {
                     child: Text(
                       color.toString(),
                       style: TextStyle(
-                        color: isSelected ? Colors.white : Colors.black,
+                        color: isSelected ? Theme.of(Get.context!).colorScheme.tertiary : Theme.of(Get.context!).colorScheme.primary,
                         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                       ),
                     ),
@@ -574,9 +574,9 @@ class ProductDetailView extends GetView<ProductController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Description',
-            style: TextStyle(
+          Text(
+            'description'.tr,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -607,7 +607,7 @@ class ProductDetailView extends GetView<ProductController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Reviews',
+                    'reviews'.tr,
                     style: Get.textTheme.titleMedium!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -617,7 +617,7 @@ class ProductDetailView extends GetView<ProductController> {
                       return ElevatedButton.icon(
                         onPressed: () => _showReviewDialog(),
                         icon: const Icon(Icons.rate_review),
-                        label: const Text('Write a Review'),
+                        label: Text('write_a_review'.tr),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Get.theme.primaryColor,
                           foregroundColor: Colors.white,
@@ -660,7 +660,7 @@ class ProductDetailView extends GetView<ProductController> {
                             ),
                           ),
                         ),
-                        Text('$reviewCount ${reviewCount == 1 ? 'review' : 'reviews'}'),
+                        Text('$reviewCount ${reviewCount == 1 ? 'review'.tr : 'reviews'.tr}'),
                       ],
                     ),
                   ],
@@ -669,10 +669,10 @@ class ProductDetailView extends GetView<ProductController> {
               const SizedBox(height: 16),
               Obx(() {
                 if (controller.reviews.isEmpty) {
-                  return const Center(
+                  return Center(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 24.0),
-                      child: Text('No reviews yet. Be the first to review!'),
+                      padding: const EdgeInsets.symmetric(vertical: 24.0),
+                      child: Text('no_reviews_yet'.tr),
                     ),
                   );
                 }
@@ -759,12 +759,12 @@ class ProductDetailView extends GetView<ProductController> {
 
     if (difference.inDays < 1) {
       if (difference.inHours < 1) {
-        return '${difference.inMinutes} minutes ago';
+        return '${difference.inMinutes} ${'minutes_ago'.tr}';
       }
-      return '${difference.inHours} hours ago';
+      return '${difference.inHours} ${'hours_ago'.tr}';
     }
     if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
+      return '${difference.inDays} ${'days_ago'.tr}';
     }
     return '${date.day}/${date.month}/${date.year}';
   }
@@ -783,7 +783,7 @@ class ProductDetailView extends GetView<ProductController> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Write a Review',
+                  'write_a_review'.tr,
                   style: Get.textTheme.headlineMedium,
                 ),
                 const SizedBox(height: 16),
@@ -815,9 +815,9 @@ class ProductDetailView extends GetView<ProductController> {
                 TextField(
                   controller: controller.reviewTextController,
                   maxLines: 4,
-                  decoration: const InputDecoration(
-                    hintText: 'Share your experience with this product...',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    hintText: 'share_your_experience'.tr,
+                    border: const OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -826,7 +826,7 @@ class ProductDetailView extends GetView<ProductController> {
                   children: [
                     TextButton(
                       onPressed: () => Get.back(),
-                      child: const Text('Cancel'),
+                      child: Text('cancel'.tr),
                     ),
                     const SizedBox(width: 12),
                     Obx(() => ElevatedButton(
@@ -844,7 +844,7 @@ class ProductDetailView extends GetView<ProductController> {
                                 strokeWidth: 2,
                               ),
                             )
-                          : const Text('Submit'),
+                          : Text('submit'.tr),
                     )),
                   ],
                 ),
@@ -862,9 +862,9 @@ class ProductDetailView extends GetView<ProductController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'You May Also Like',
-            style: TextStyle(
+          Text(
+            'you_may_also_like'.tr,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -874,8 +874,8 @@ class ProductDetailView extends GetView<ProductController> {
             height: 220,
             child: Obx(() {
               if (controller.relatedProducts.isEmpty) {
-                return const Center(
-                  child: Text('No related products'),
+                return Center(
+                  child: Text('no_related_products'.tr),
                 );
               }
               
@@ -972,7 +972,7 @@ class ProductDetailView extends GetView<ProductController> {
           children: [
             Expanded(
               child: SecondaryButton(
-                text: 'Add to Cart',
+                text: 'add_to_cart'.tr,
                 onPressed: controller.addToCart,
                 isLoading: controller.isAddingToCart.value,
                 height: 48,
@@ -981,7 +981,7 @@ class ProductDetailView extends GetView<ProductController> {
             const SizedBox(width: 16),
             Expanded(
               child: PrimaryButton(
-                text: 'Buy Now',
+                text: 'buy_now'.tr,
                 onPressed: controller.buyNow,
                 isLoading: controller.isAddingToCart.value,
                 height: 48,
@@ -992,8 +992,4 @@ class ProductDetailView extends GetView<ProductController> {
       ),
     );
   }
-
-  // String _formatDate(DateTime date) {
-  //   return '${date.day}/${date.month}/${date.year}';
-  // }
 }

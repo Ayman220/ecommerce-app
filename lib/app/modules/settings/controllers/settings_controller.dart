@@ -114,28 +114,48 @@ class SettingsController extends GetxController {
     // Apply the selected language to the app
     if (lang == 'Arabic') {
       Get.updateLocale(const Locale('ar', 'SA'));
+      // Enable RTL for Arabic
+      Get.find<ThemeService>().updateTextDirection(TextDirection.rtl);
     } else {
       Get.updateLocale(const Locale('en', 'US'));
+      // Use LTR for English
+      Get.find<ThemeService>().updateTextDirection(TextDirection.ltr);
     }
     
-    // Save the preference
+    // Save to local storage through ThemeService (for persistence across app sessions)
+    _themeService.saveLanguagePreference(lang);
+    
+    // Save to Firestore (for cross-device sync)
     saveSettings();
   }
   
   void initializeLanguage() {
-    // Get system locale
-    final String systemLocale = Get.deviceLocale?.languageCode ?? 'en';
+    // First check if we have a saved preference
+    final String savedLanguage = _themeService.languagePreference;
     
-    // Set language based on system locale (only supporting English and Arabic)
-    if (systemLocale == 'ar') {
-      language.value = 'Arabic';
-      // Set app locale to Arabic
-      Get.updateLocale(const Locale('ar', 'SA'));
+    if (savedLanguage.isNotEmpty) {
+      // Use saved preference
+      language.value = savedLanguage;
+      if (savedLanguage == 'Arabic') {
+        Get.updateLocale(const Locale('ar', 'SA'));
+        Get.find<ThemeService>().updateTextDirection(TextDirection.rtl);
+      } else {
+        Get.updateLocale(const Locale('en', 'US'));
+        Get.find<ThemeService>().updateTextDirection(TextDirection.ltr);
+      }
     } else {
-      // Default to English for any other language
-      language.value = 'English';
-      // Set app locale to English
-      Get.updateLocale(const Locale('en', 'US'));
+      // Fall back to system locale
+      final String systemLocale = Get.deviceLocale?.languageCode ?? 'en';
+      
+      if (systemLocale == 'ar') {
+        language.value = 'Arabic';
+        Get.updateLocale(const Locale('ar', 'SA'));
+        Get.find<ThemeService>().updateTextDirection(TextDirection.rtl);
+      } else {
+        language.value = 'English';
+        Get.updateLocale(const Locale('en', 'US'));
+        Get.find<ThemeService>().updateTextDirection(TextDirection.ltr);
+      }
     }
   }
 }

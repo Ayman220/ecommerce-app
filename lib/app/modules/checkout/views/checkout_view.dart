@@ -351,9 +351,9 @@ class CheckoutView extends GetView<CheckoutController> {
                     // Full name
                     TextFormField(
                       controller: controller.fullNameController,
-                      decoration: const InputDecoration(
-                        labelText: 'Full Name',
-                        hintText: 'Enter your full name',
+                      decoration: InputDecoration(
+                        labelText: 'full_name'.tr,
+                        hintText: 'full_name'.tr,
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -367,9 +367,9 @@ class CheckoutView extends GetView<CheckoutController> {
                     // Phone
                     TextFormField(
                       controller: controller.phoneController,
-                      decoration: const InputDecoration(
-                        labelText: 'Phone Number',
-                        hintText: 'Enter your phone number',
+                      decoration: InputDecoration(
+                        labelText: 'phone_number'.tr,
+                        hintText: 'phone_number'.tr,
                       ),
                       keyboardType: TextInputType.phone,
                       validator: (value) {
@@ -390,9 +390,9 @@ class CheckoutView extends GetView<CheckoutController> {
                     // Address line 1
                     TextFormField(
                       controller: controller.addressLine1Controller,
-                      decoration: const InputDecoration(
-                        labelText: 'Address Line 1',
-                        hintText: 'Enter your street address',
+                      decoration: InputDecoration(
+                        labelText: 'address_line_1'.tr,
+                        hintText: 'address_line_1'.tr,
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -406,10 +406,9 @@ class CheckoutView extends GetView<CheckoutController> {
                     // Address line 2 (optional)
                     TextFormField(
                       controller: controller.addressLine2Controller,
-                      decoration: const InputDecoration(
-                        labelText: 'Address Line 2 (Optional)',
-                        hintText:
-                            'Apartment, suite, unit, building, floor, etc.',
+                      decoration: InputDecoration(
+                        labelText: 'address_line_2'.tr,
+                        hintText: 'address_line_2'.tr,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -417,9 +416,9 @@ class CheckoutView extends GetView<CheckoutController> {
                     // City
                     TextFormField(
                       controller: controller.cityController,
-                      decoration: const InputDecoration(
-                        labelText: 'City',
-                        hintText: 'Enter your city',
+                      decoration: InputDecoration(
+                        labelText: 'city'.tr,
+                        hintText: 'city'.tr,
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -437,9 +436,9 @@ class CheckoutView extends GetView<CheckoutController> {
                         Expanded(
                           child: TextFormField(
                             controller: controller.stateController,
-                            decoration: const InputDecoration(
-                              labelText: 'State/Province',
-                              hintText: 'Enter your state',
+                            decoration: InputDecoration(
+                              labelText: 'state'.tr,
+                              hintText: 'state'.tr,
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -455,9 +454,9 @@ class CheckoutView extends GetView<CheckoutController> {
                         Expanded(
                           child: TextFormField(
                             controller: controller.postalCodeController,
-                            decoration: const InputDecoration(
-                              labelText: 'Postal Code',
-                              hintText: 'Enter postal code',
+                            decoration: InputDecoration(
+                              labelText: 'postal_code'.tr,
+                              hintText: 'postal_code'.tr,
                             ),
                             keyboardType: TextInputType.text,
                           ),
@@ -478,7 +477,7 @@ class CheckoutView extends GetView<CheckoutController> {
                           child: DropdownButton<String>(
                             value: controller.selectedCountryCode.value,
                             isExpanded: true,
-                            hint: const Text("Select Country"),
+                            hint: Text("select_country".tr),
                             items: controller.countries.map((country) {
                               return DropdownMenuItem<String>(
                                 value: country.countryCode,
@@ -518,7 +517,7 @@ class CheckoutView extends GetView<CheckoutController> {
 
                     // Save address checkbox
                     Obx(() => CheckboxListTile(
-                          title: const Text('Save this address for future use'),
+                          title: Text('save_address'.tr),
                           value: controller.saveAddress.value,
                           onChanged: (value) {
                             controller.saveAddress.value = value ?? false;
@@ -530,7 +529,7 @@ class CheckoutView extends GetView<CheckoutController> {
 
                     // Set as default checkbox
                     Obx(() => CheckboxListTile(
-                          title: const Text('Set as my default address'),
+                          title: Text('set_as_default'.tr),
                           value: controller.setAsDefault.value,
                           onChanged: (value) {
                             controller.setAsDefault.value = value ?? false;
@@ -553,7 +552,7 @@ class CheckoutView extends GetView<CheckoutController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Payment Method',
+          'payment_method'.tr,
           style: Get.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w500,
           ),
@@ -589,7 +588,7 @@ class CheckoutView extends GetView<CheckoutController> {
       children: [
         // Shipping address
         Text(
-          'Shipping Address',
+          'shipping_address'.tr,
           style: Get.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w500,
           ),
@@ -634,7 +633,7 @@ class CheckoutView extends GetView<CheckoutController> {
 
         // Payment method
         Text(
-          'Payment Method',
+          'payment_method'.tr,
           style: Get.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w500,
           ),
@@ -660,8 +659,8 @@ class CheckoutView extends GetView<CheckoutController> {
               const SizedBox(width: 16),
               Text(
                 controller.selectedPaymentMethod.value == 'card'
-                    ? 'Credit/Debit Card'
-                    : 'Cash on Delivery',
+                    ? 'credit_debit_card'.tr
+                    : 'cash_on_delivery'.tr,
                 style: Get.textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.w500,
                 ),
@@ -673,7 +672,7 @@ class CheckoutView extends GetView<CheckoutController> {
 
         // Order items
         Text(
-          'Order Items',
+          'order_items'.tr,
           style: Get.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w500,
           ),
@@ -760,7 +759,7 @@ class CheckoutView extends GetView<CheckoutController> {
 
         // Additional note
         Text(
-          'Additional Note',
+          'additional_note'.tr,
           style: Get.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w500,
           ),
@@ -768,8 +767,8 @@ class CheckoutView extends GetView<CheckoutController> {
         const SizedBox(height: 8),
         TextFormField(
           controller: controller.noteController,
-          decoration: const InputDecoration(
-            hintText: 'Add a note for your order (optional)',
+          decoration: InputDecoration(
+            hintText: 'add_note'.tr,
           ),
           maxLines: 3,
         ),
@@ -795,19 +794,19 @@ class CheckoutView extends GetView<CheckoutController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Order Summary',
+            'order_summary'.tr,
             style: Get.textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
           _buildSummaryRow(
-            label: 'Subtotal',
+            label: 'subtotal'.tr,
             value: '\$${controller.subtotal.value.toStringAsFixed(2)}',
           ),
           _buildSummaryRow(
-            label: 'Shipping',
+            label: 'shipping'.tr,
             value: controller.shipping.value > 0
                 ? '\$${controller.shipping.value.toStringAsFixed(2)}'
-                : 'Free',
+                : 'free'.tr,
             valueStyle: controller.shipping.value > 0
                 ? null
                 : TextStyle(
@@ -815,12 +814,12 @@ class CheckoutView extends GetView<CheckoutController> {
                   ),
           ),
           _buildSummaryRow(
-            label: 'Estimated Tax',
+            label: 'estimated_tax'.tr,
             value: '\$${controller.tax.value.toStringAsFixed(2)}',
           ),
           const Divider(height: 24),
           _buildSummaryRow(
-            label: 'Total',
+            label: 'total'.tr,
             value: '\$${controller.total.value.toStringAsFixed(2)}',
             isTotal: true,
           ),
@@ -915,7 +914,7 @@ class CheckoutView extends GetView<CheckoutController> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    'Default',
+                    'default'.tr,
                     style: TextStyle(
                       fontSize: 12,
                       color: Get.theme.colorScheme.primary,
@@ -937,7 +936,7 @@ class CheckoutView extends GetView<CheckoutController> {
           trailing: IconButton(
             icon: const Icon(Icons.edit_outlined),
             onPressed: () => controller.editAddress(address),
-            tooltip: 'Edit Address',
+            tooltip: 'edit_address'.tr,
           ),
           isThreeLine: true,
         ),
@@ -960,8 +959,8 @@ class CheckoutView extends GetView<CheckoutController> {
             borderRadius: BorderRadius.circular(4),
           ),
           child: RadioListTile<String>(
-            title: const Text('Credit / Debit Card'),
-            subtitle: const Text('Pay securely with your card'),
+            title: Text('credit_debit_card'.tr),
+            subtitle: Text('pay_with_card'.tr),
             secondary: const Icon(Icons.credit_card),
             value: 'card',
             groupValue: controller.selectedPaymentMethod.value,
@@ -989,8 +988,8 @@ class CheckoutView extends GetView<CheckoutController> {
             borderRadius: BorderRadius.circular(4),
           ),
           child: RadioListTile<String>(
-            title: const Text('Cash on Delivery'),
-            subtitle: const Text('Pay when you receive your items'),
+            title: Text('cash_on_delivery'.tr),
+            subtitle: Text('pay_on_delivery'.tr),
             secondary: const Icon(Icons.money),
             value: 'cod',
             groupValue: controller.selectedPaymentMethod.value,
@@ -1015,7 +1014,7 @@ class CheckoutView extends GetView<CheckoutController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Card Details',
+            'card_details'.tr,
             style: Get.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w500,
             ),
@@ -1025,10 +1024,10 @@ class CheckoutView extends GetView<CheckoutController> {
           // Card number
           TextFormField(
             controller: controller.cardNumberController,
-            decoration: const InputDecoration(
-              labelText: 'Card Number',
-              hintText: 'XXXX XXXX XXXX XXXX',
-              prefixIcon: Icon(Icons.credit_card),
+            decoration: InputDecoration(
+              labelText: 'card_number'.tr,
+              hintText: 'card_number'.tr,
+              prefixIcon: const Icon(Icons.credit_card),
             ),
             keyboardType: TextInputType.number,
             inputFormatters: [
@@ -1050,10 +1049,10 @@ class CheckoutView extends GetView<CheckoutController> {
           // Cardholder name
           TextFormField(
             controller: controller.cardHolderController,
-            decoration: const InputDecoration(
-              labelText: 'Cardholder Name',
-              hintText: 'Name as it appears on your card',
-              prefixIcon: Icon(Icons.person),
+            decoration: InputDecoration(
+              labelText: 'cardholder_name'.tr,
+              hintText: 'cardholder_name'.tr,
+              prefixIcon: const Icon(Icons.person),
             ),
             textCapitalization: TextCapitalization.words,
             validator: (value) {
@@ -1073,10 +1072,10 @@ class CheckoutView extends GetView<CheckoutController> {
                 flex: 3,
                 child: TextFormField(
                   controller: controller.expiryDateController,
-                  decoration: const InputDecoration(
-                    labelText: 'Expiry Date',
-                    hintText: 'MM/YY',
-                    prefixIcon: Icon(Icons.date_range),
+                  decoration: InputDecoration(
+                    labelText: 'expiry_date'.tr,
+                    hintText: 'expiry_date'.tr,
+                    prefixIcon: const Icon(Icons.date_range),
                   ),
                   keyboardType: TextInputType.number,
                   inputFormatters: [
@@ -1101,10 +1100,10 @@ class CheckoutView extends GetView<CheckoutController> {
                 flex: 2,
                 child: TextFormField(
                   controller: controller.cvvController,
-                  decoration: const InputDecoration(
-                    labelText: 'CVV',
-                    hintText: 'XXX',
-                    prefixIcon: Icon(Icons.lock),
+                  decoration: InputDecoration(
+                    labelText: 'cvv'.tr,
+                    hintText: 'cvv'.tr,
+                    prefixIcon: const Icon(Icons.lock),
                   ),
                   keyboardType: TextInputType.number,
                   inputFormatters: [
@@ -1129,7 +1128,7 @@ class CheckoutView extends GetView<CheckoutController> {
 
           // Billing address same as shipping
           CheckboxListTile(
-            title: const Text('Billing address same as shipping address'),
+            title: Text('billing_same_as_shipping'.tr),
             value: true,
             onChanged: (value) {},
             contentPadding: EdgeInsets.zero,
@@ -1139,7 +1138,7 @@ class CheckoutView extends GetView<CheckoutController> {
 
           // Save card for future purchases
           CheckboxListTile(
-            title: const Text('Save card for future purchases'),
+            title: Text('save_card'.tr),
             value: false,
             onChanged: (value) {},
             contentPadding: EdgeInsets.zero,
@@ -1169,14 +1168,14 @@ class CheckoutView extends GetView<CheckoutController> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Cash on Delivery',
+            'cash_on_delivery'.tr,
             style: Get.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'You will pay for your order when it is delivered to your doorstep. Please have the exact amount ready to ensure a smooth delivery.',
+            'cash_on_delivery_info'.tr,
             style: Get.textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
@@ -1205,7 +1204,7 @@ class CheckoutView extends GetView<CheckoutController> {
             if (controller.currentStep.value > 0)
               Expanded(
                 child: SecondaryButton(
-                  text: 'Back',
+                  text: 'back'.tr,
                   onPressed: controller.previousStep,
                 ),
               ),
@@ -1218,8 +1217,8 @@ class CheckoutView extends GetView<CheckoutController> {
               child: PrimaryButton(
                 text:
                     controller.currentStep.value == controller.steps.length - 1
-                        ? 'Place Order'
-                        : 'Next',
+                        ? 'place_order'.tr
+                        : 'next'.tr,
                 onPressed:
                     controller.currentStep.value == controller.steps.length - 1
                         ? controller.placeOrder

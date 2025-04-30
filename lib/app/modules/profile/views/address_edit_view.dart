@@ -173,7 +173,7 @@ class AddressEditView extends GetView<ProfileController> {
 
               const SizedBox(height: 24),
               Obx(() => SwitchListTile(
-                    title: const Text('Set as default address'),
+                    title: Text('set_default'.tr),
                     value: controller.setAsDefault.value,
                     onChanged: (value) {
                       controller.setAsDefault.value = value;

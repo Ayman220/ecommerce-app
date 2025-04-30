@@ -62,21 +62,17 @@ class SettingsView extends GetView<SettingsController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionHeader('Appearance'),
+        _buildSectionHeader('appearance'.tr),
         Obx(() => SwitchListTile(
-              title: const Text('Use System Theme'),
-              subtitle: const Text('Match app theme to system settings'),
+              title: Text('use_system_theme'.tr),
               value: controller.useSystemTheme.value,
               onChanged: controller.toggleUseSystemTheme,
-              activeColor: Get.theme.colorScheme.primary,
             )),
-        if (!controller.useSystemTheme.value)
-          Obx(() => SwitchListTile(
-                title: const Text('Dark Mode'),
-                subtitle: const Text('Use dark theme'),
-                value: controller.isDarkMode.value,
-                onChanged: controller.toggleDarkMode,
-              )),
+        Obx(() => SwitchListTile(
+              title: Text('dark_mode'.tr),
+              value: controller.isDarkMode.value,
+              onChanged: controller.useSystemTheme.value ? null : controller.toggleDarkMode,
+            )),
       ],
     );
   }
@@ -85,11 +81,10 @@ class SettingsView extends GetView<SettingsController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionHeader('Notifications'),
+        _buildSectionHeader('notifications'.tr),
         Obx(() => SwitchListTile(
-              title: const Text('Push Notifications'),
-              subtitle:
-                  const Text('Receive notifications for orders and promotions'),
+              title: Text('push_notifications'.tr),
+              subtitle: Text('receive_notifications'.tr),
               value: controller.isNotificationsEnabled.value,
               onChanged: controller.toggleNotifications,
             )),
@@ -101,15 +96,15 @@ class SettingsView extends GetView<SettingsController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionHeader('Localization'),
+        _buildSectionHeader('localization'.tr),
         ListTile(
-          title: const Text('Currency'),
+          title: Text('currency'.tr),
           subtitle: Obx(() => Text(controller.currency.value)),
           trailing: const Icon(Icons.chevron_right),
           onTap: _showCurrencyPicker,
         ),
         ListTile(
-          title: const Text('Language'),
+          title: Text('language'.tr),
           subtitle: Obx(() => Text(controller.language.value)),
           trailing: const Icon(Icons.chevron_right),
           onTap: _showLanguagePicker,
@@ -163,9 +158,9 @@ class SettingsView extends GetView<SettingsController> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 children: [
-                  const Text(
-                    'Select Currency',
-                    style: TextStyle(
+                  Text(
+                    'select_currency'.tr,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -222,50 +217,50 @@ class SettingsView extends GetView<SettingsController> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                const Text(
-                  'Select Language',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  Text(
+                    'select_language'.tr,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const Spacer(),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => Get.back(),
-                ),
-              ],
+                  const Spacer(),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Get.back(),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const Divider(),
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: languages.length,
-            itemBuilder: (context, index) {
-              final language = languages[index];
-              return ListTile(
-                title: Text(language),
-                trailing: controller.language.value == language
-                    ? Icon(
-                        Icons.check,
-                        color: Get.theme.colorScheme.primary,
-                      )
-                    : null,
-                onTap: () {
-                  controller.setLanguage(language);
-                  Get.back();
-                },
-              );
-            },
-          ),
-        ],
+            const Divider(),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: languages.length,
+              itemBuilder: (context, index) {
+                final language = languages[index];
+                return ListTile(
+                  title: Text(language),
+                  trailing: controller.language.value == language
+                      ? Icon(
+                          Icons.check,
+                          color: Get.theme.colorScheme.primary,
+                        )
+                      : null,
+                  onTap: () {
+                    controller.setLanguage(language);
+                    Get.back();
+                  },
+                );
+              },
+            ),
+          ],
+        ),
       ),
-    ),
-    isScrollControlled: true,
-  );
-}
+      isScrollControlled: true,
+    );
+  }
 }
