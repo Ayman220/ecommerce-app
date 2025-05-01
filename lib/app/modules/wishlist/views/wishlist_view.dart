@@ -13,7 +13,7 @@ class WishlistView extends GetView<WishlistController> {
     return KeyboardDismisser(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('My Wishlist'),
+          title: Text('my_wishlist'.tr),
         ),
         body: Obx(() {
           if (controller.isLoading.value) {
@@ -44,7 +44,7 @@ class WishlistView extends GetView<WishlistController> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Your wishlist is empty',
+            'empty_wishlist_title'.tr,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
@@ -53,7 +53,7 @@ class WishlistView extends GetView<WishlistController> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Add items you love to your wishlist',
+            'empty_wishlist_message'.tr,
             style: TextStyle(
               fontSize: 14,
               color: Colors.grey[600],
@@ -65,7 +65,7 @@ class WishlistView extends GetView<WishlistController> {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
             ),
-            child: const Text('BROWSE PRODUCTS'),
+            child: Text('browse_products'.tr),
           ),
         ],
       ),
@@ -136,8 +136,8 @@ class WishlistView extends GetView<WishlistController> {
                   children: [
                     Text(
                       isOnSale 
-                          ? '\$${item.discountedPrice!.toStringAsFixed(2)}'
-                          : '\$${item.price.toStringAsFixed(2)}',
+                          ? 'product_price'.tr.replaceAll('@price', item.discountedPrice!.toStringAsFixed(2))
+                          : 'product_price'.tr.replaceAll('@price', item.price.toStringAsFixed(2)),
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -146,9 +146,9 @@ class WishlistView extends GetView<WishlistController> {
                     ),
                     if (isOnSale)
                       Padding(
-                        padding: const EdgeInsets.only(left: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          '\$${item.price.toStringAsFixed(2)}',
+                          'product_price'.tr.replaceAll('@price', item.price.toStringAsFixed(2)),
                           style: const TextStyle(
                             fontSize: 14,
                             decoration: TextDecoration.lineThrough,
@@ -168,7 +168,7 @@ class WishlistView extends GetView<WishlistController> {
                       child: ElevatedButton.icon(
                         onPressed: () => controller.removeFromWishlist(item.id),
                         icon: const Icon(Icons.delete_outline, size: 16),
-                        label: const Text('Remove', style: TextStyle(fontSize: 12)),
+                        label: Text('remove'.tr, style: const TextStyle(fontSize: 12)),
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                           minimumSize: Size.zero,
@@ -181,7 +181,7 @@ class WishlistView extends GetView<WishlistController> {
                       child: ElevatedButton.icon(
                         onPressed: () => controller.goToProductDetail(item.productId),
                         icon: const Icon(Icons.shopping_bag_outlined, size: 16),
-                        label: const Text('View', style: TextStyle(fontSize: 12)),
+                        label: Text('view'.tr, style: const TextStyle(fontSize: 12)),
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                           minimumSize: Size.zero,

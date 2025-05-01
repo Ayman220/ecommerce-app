@@ -13,17 +13,17 @@ class CartView extends GetView<CartController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Shopping Bag'),
+        title: Text('shopping_bag'.tr),
         actions: [
           Obx(() {
             if (controller.cartItems.isEmpty) {
               return const SizedBox.shrink();
             }
-            
+
             return IconButton(
               icon: const Icon(Icons.delete_outline),
               onPressed: controller.clearCart,
-              tooltip: 'Clear bag',
+              tooltip: 'clear_bag'.tr,
             );
           }),
         ],
@@ -36,11 +36,11 @@ class CartView extends GetView<CartController> {
             ),
           );
         }
-        
+
         if (controller.cartItems.isEmpty) {
           return _buildEmptyCart();
         }
-        
+
         return _buildCartContent();
       }),
     );
@@ -60,14 +60,15 @@ class CartView extends GetView<CartController> {
           ),
           const SizedBox(height: 32),
           Text(
-            'Your shopping bag is empty',
+            'empty_bag'.tr,
             style: Get.textTheme.titleLarge,
           ),
           const SizedBox(height: 16),
           Text(
-            'Items you add to your bag will appear here',
+            'empty_bag_message'.tr,
             style: Get.textTheme.bodyMedium?.copyWith(
-              color: Get.theme.colorScheme.onSurface.withAlpha((0.6 * 255).toInt()),
+              color: Get.theme.colorScheme.onSurface
+                  .withAlpha((0.6 * 255).toInt()),
             ),
             textAlign: TextAlign.center,
           ),
@@ -75,7 +76,7 @@ class CartView extends GetView<CartController> {
           SizedBox(
             width: 200,
             child: PrimaryButton(
-              text: 'Start Shopping',
+              text: 'start_shopping'.tr,
               onPressed: controller.continueShopping,
             ),
           ),
@@ -97,13 +98,15 @@ class CartView extends GetView<CartController> {
                 const SizedBox(height: 16),
                 // Display number of items
                 Text(
-                  '${controller.cartItems.length} ${controller.cartItems.length == 1 ? 'Item' : 'Items'}',
+                  controller.cartItems.length == 1
+                      ? '${controller.cartItems.length} ${'cart_item_single'.tr}'
+                      : '${controller.cartItems.length} ${'cart_items_plural'.tr}',
                   style: Get.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(height: 24),
-                
+
                 // Cart items list
                 ListView.separated(
                   shrinkWrap: true,
@@ -115,35 +118,35 @@ class CartView extends GetView<CartController> {
                     return _buildCartItem(item);
                   },
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Summary section
                 _buildOrderSummary(),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Checkout button
                 SizedBox(
                   width: double.infinity,
                   child: PrimaryButton(
-                    text: 'Proceed to Checkout',
+                    text: 'proceed_to_checkout'.tr,
                     onPressed: controller.proceedToCheckout,
                     isLoading: controller.isProcessingCheckout.value,
                   ),
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Continue shopping button
                 SizedBox(
                   width: double.infinity,
                   child: SecondaryButton(
-                    text: 'Continue Shopping',
+                    text: 'continue_shopping'.tr,
                     onPressed: controller.continueShopping,
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
               ],
             ),
@@ -172,7 +175,8 @@ class CartView extends GetView<CartController> {
         children: [
           // Product image
           GestureDetector(
-            onTap: () => Get.toNamed('/product-detail', arguments: item.productId),
+            onTap: () =>
+                Get.toNamed('/product-detail', arguments: item.productId),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(4),
               child: CachedNetworkImage(
@@ -190,9 +194,9 @@ class CartView extends GetView<CartController> {
               ),
             ),
           ),
-          
+
           const SizedBox(width: 16),
-          
+
           // Product details
           Expanded(
             child: Column(
@@ -205,42 +209,43 @@ class CartView extends GetView<CartController> {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                
+
                 const SizedBox(height: 8),
-                
+
                 if (item.size != null || item.color != null)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: Text(
                       [
-                        if (item.size != null) 'Size: ${item.size}',
-                        if (item.color != null) 'Color: ${item.color}',
+                        if (item.size != null) '${'size'.tr}: ${item.size}',
+                        if (item.color != null) '${'color'.tr}: ${item.color}',
                       ].join(' • '),
-                      style: Get.textTheme.bodySmall,
                     ),
                   ),
-                
+
                 Text(
-                  '\$${item.price.toStringAsFixed(2)}',
+                  'product_price'
+                      .tr
+                      .replaceAll('@price', item.price.toStringAsFixed(2)),
                   style: Get.textTheme.titleMedium?.copyWith(
                     color: Get.theme.colorScheme.secondary,
                   ),
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Quantity selector
                 Row(
                   children: [
                     Text(
-                      'Quantity:',
+                      '${'quantity'.tr}:',
                       style: Get.textTheme.bodySmall,
                     ),
                     const SizedBox(width: 16),
                     _buildQuantitySelector(item),
                     // Reduced the spacing here
                     const SizedBox(width: 4),
-                    
+
                     // Remove button - made more compact
                     InkWell(
                       onTap: () => controller.removeItem(item.id),
@@ -276,11 +281,10 @@ class CartView extends GetView<CartController> {
           _buildQuantityButton(
             icon: Icons.remove,
             onPressed: () => controller.updateQuantity(
-              item.id, 
+              item.id,
               item.quantity - 1,
             ),
           ),
-          
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
@@ -290,11 +294,10 @@ class CartView extends GetView<CartController> {
               ),
             ),
           ),
-          
           _buildQuantityButton(
             icon: Icons.add,
             onPressed: () => controller.updateQuantity(
-              item.id, 
+              item.id,
               item.quantity + 1,
             ),
           ),
@@ -334,39 +337,37 @@ class CartView extends GetView<CartController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Order Summary',
+            'order_summary'.tr,
             style: Get.textTheme.titleMedium,
           ),
-          
           const SizedBox(height: 16),
-          
           _buildSummaryRow(
-            label: 'Subtotal',
-            value: '\$${controller.subtotal.value.toStringAsFixed(2)}',
+            label: 'subtotal'.tr,
+            value: 'product_price'.trParams(
+                {'price': controller.subtotal.value.toStringAsFixed(2)}),
           ),
-          
           _buildSummaryRow(
-            label: 'Shipping',
-            value: controller.shipping.value > 0 
-                ? '\$${controller.shipping.value.toStringAsFixed(2)}' 
-                : 'Free',
-            valueStyle: controller.shipping.value > 0 
+            label: 'shipping'.tr,
+            value: controller.shipping.value > 0
+                ? 'product_price'.tr.replaceAll(
+                    '@price', controller.shipping.value.toStringAsFixed(2))
+                : 'free_shipping'.tr,
+            valueStyle: controller.shipping.value > 0
                 ? null
                 : TextStyle(
                     color: Get.theme.colorScheme.secondary,
                   ),
           ),
-          
           _buildSummaryRow(
-            label: 'Estimated Tax',
-            value: '\$${controller.tax.value.toStringAsFixed(2)}',
+            label: 'estimated_tax'.tr,
+            value: 'product_price'
+                .trParams({'price': controller.tax.value.toStringAsFixed(2)}),
           ),
-          
           const Divider(height: 24),
-          
           _buildSummaryRow(
-            label: 'Total',
-            value: '\$${controller.total.value.toStringAsFixed(2)}',
+            label: 'total'.tr,
+            value: 'product_price'
+                .trParams({'price': controller.total.value.toStringAsFixed(2)}),
             isTotal: true,
           ),
         ],
@@ -387,17 +388,17 @@ class CartView extends GetView<CartController> {
         children: [
           Text(
             label,
-            style: isTotal
-                ? Get.textTheme.titleMedium
-                : Get.textTheme.bodyMedium,
+            style:
+                isTotal ? Get.textTheme.titleMedium : Get.textTheme.bodyMedium,
           ),
           Text(
             value,
-            style: valueStyle ?? (isTotal
-                ? Get.textTheme.titleMedium?.copyWith(
-                    color: Get.theme.colorScheme.secondary,
-                  )
-                : Get.textTheme.bodyMedium),
+            style: valueStyle ??
+                (isTotal
+                    ? Get.textTheme.titleMedium?.copyWith(
+                        color: Get.theme.colorScheme.secondary,
+                      )
+                    : Get.textTheme.bodyMedium),
           ),
         ],
       ),

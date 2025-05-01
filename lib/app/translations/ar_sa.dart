@@ -3,7 +3,7 @@ final Map<String, String> arSA = {
   'app_title': 'متجر الأناقة',
   'app_name': 'ستايل شوب',
   'cancel': 'إلغاء',
-  
+
   // Auth
   'welcome_back': 'مرحباً',
   'sign_in': 'تسجيل الدخول',
@@ -14,14 +14,15 @@ final Map<String, String> arSA = {
   'dont_have_account': 'ليس لديك حساب؟',
   'already_have_account': 'لديك حساب بالفعل؟',
   'create_account': 'إنشاء حساب',
-  'reset_password_instructions': 'أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور',
+  'reset_password_instructions':
+      'أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور',
   'send_reset_link': 'إرسال رابط إعادة التعيين',
   'lets_get_started': 'لنبدأ',
   'create_account_to_continue': 'أنشئ حسابًا للمتابعة',
   'full_name': 'الاسم الكامل',
   'confirm_password': 'تأكيد كلمة المرور',
   'password_requirement': 'يجب أن تكون كلمة المرور 6 أحرف على الأقل',
-  
+
   // Home
   'home': 'الرئيسية',
   'categories': 'الفئات',
@@ -36,7 +37,7 @@ final Map<String, String> arSA = {
   'no_new_arrivals': 'لا توجد منتجات جديدة متاحة',
   'type_at_least_two_characters': 'اكتب حرفين على الأقل للبحث',
   'no_products_found': 'لا توجد منتجات لـ',
-  
+
   // Product
   'add_to_cart': 'أضف إلى السلة',
   'buy_now': 'اشتر الآن',
@@ -66,7 +67,7 @@ final Map<String, String> arSA = {
   'submit': 'إرسال',
   'you_may_also_like': 'قد يعجبك أيضاً',
   'no_related_products': 'لا توجد منتجات ذات صلة',
-  
+
   // Cart
   'shopping_cart': 'سلة التسوق',
   'checkout': 'إتمام الشراء',
@@ -74,7 +75,24 @@ final Map<String, String> arSA = {
   'empty_cart': 'سلة التسوق فارغة',
   'remove_item': 'إزالة العنصر',
   'cart': 'السلة',
-  
+
+  // Cart view
+  'shopping_bag': 'حقيبة التسوق',
+  'clear_bag': 'تفريغ الحقيبة',
+  'empty_bag': 'حقيبة التسوق فارغة',
+  'empty_bag_message': 'العناصر التي تضيفها إلى حقيبتك ستظهر هنا',
+  'start_shopping': 'ابدأ التسوق',
+  'cart_item_single': 'عنصر',
+  'cart_items_plural': 'عناصر',
+  'product_price': '@price',
+  'order_summary': 'ملخص الطلب',
+  'subtotal': 'المجموع الفرعي',
+  'shipping': 'الشحن',
+  'free_shipping': 'مجاني',
+  'estimated_tax': 'الضريبة المقدرة',
+  'proceed_to_checkout': 'إتمام الشراء',
+  'continue_shopping': 'مواصلة التسوق',
+
   // Profile
   'profile': 'الملف الشخصي',
   'my_orders': 'طلباتي',
@@ -85,7 +103,24 @@ final Map<String, String> arSA = {
   'my_profile': 'ملفي الشخصي',
   'wishlist': 'المفضلة',
   'account': 'الحساب',
-  
+  'user': 'المستخدم',
+  'personal_information': 'المعلومات الشخصية',
+  'phone_number': 'رقم الهاتف',
+  'save_changes': 'حفظ التغييرات',
+  'security': 'الأمان',
+  'change_password': 'تغيير كلمة المرور',
+  'saved_addresses': 'العناوين المحفوظة',
+  'add_new': 'إضافة جديد',
+  'no_saved_addresses':
+      'لا توجد عناوين محفوظة حتى الآن.\nأضف عنوانك الأول للبدء.',
+  'default': 'افتراضي',
+  'edit': 'تعديل',
+  'set_as_default': 'تعيين كافتراضي',
+  'delete': 'حذف',
+  'delete_address': 'حذف العنوان',
+  'delete_address_confirmation':
+      'هل أنت متأكد أنك تريد حذف هذا العنوان؟ لا يمكن التراجع عن هذا الإجراء.',
+
   // Settings
   'language': 'اللغة',
   'theme': 'المظهر',
@@ -95,16 +130,205 @@ final Map<String, String> arSA = {
   'terms_conditions': 'الشروط والأحكام',
   'about_us': 'من نحن',
   'contact_us': 'اتصل بنا',
-  
+  'appearance': 'المظهر',
+  'use_system_theme': 'استخدم سمة النظام',
+  'dark_mode': 'الوضع المظلم',
+  'push_notifications': 'إشعارات فورية',
+  'receive_notifications': 'تلقي إشعارات حول الطلبات والعروض والأخبار',
+  'localization': 'الترجمة والتوطين',
+  'currency': 'العملة',
+  'about': 'حول التطبيق',
+  'app_version': 'إصدار التطبيق',
+  'terms_of_service': 'شروط الخدمة',
+  'select_currency': 'اختر العملة',
+  'select_language': 'اختر اللغة',
+  'english': 'الإنجليزية',
+  'arabic': 'العربية',
+
   // Error messages
   'error_occurred': 'حدث خطأ',
   'try_again': 'حاول مرة أخرى',
   'invalid_email': 'بريد إلكتروني غير صالح',
   'invalid_password': 'يجب أن تكون كلمة المرور 6 أحرف على الأقل',
   'field_required': 'هذا الحقل مطلوب',
-  
+
   // Success messages
   'added_to_cart': 'تمت الإضافة إلى السلة بنجاح',
   'order_placed': 'تم تقديم الطلب بنجاح',
   'changes_saved': 'تم حفظ التغييرات بنجاح',
+
+  // Checkout process
+  'payment': 'الدفع',
+  'summary': 'الملخص',
+  'back': 'رجوع',
+  'next': 'التالي',
+  'place_order': 'تأكيد الطلب',
+
+  // Shipping info
+  'enter_new_address': 'إدخال عنوان جديد',
+  'add_new_address': 'إضافة عنوان جديد',
+  'edit_address': 'تعديل العنوان',
+  'full_name_required': 'الرجاء إدخال الاسم الكامل',
+  'phone_required': 'الرجاء إدخال رقم الهاتف',
+  'phone_invalid': 'الرجاء إدخال رقم هاتف صحيح',
+  'address_line_1': 'العنوان السطر 1',
+  'address_line_1_required': 'الرجاء إدخال عنوان الشارع',
+  'address_line_2': 'العنوان السطر 2 (اختياري)',
+  'city': 'المدينة',
+  'city_required': 'الرجاء إدخال المدينة',
+  'state': 'المنطقة/الولاية',
+  'state_required': 'الرجاء إدخال المنطقة/الولاية',
+  'postal_code': 'الرمز البريدي',
+  'select_country': 'اختر الدولة',
+  'save_address': 'حفظ هذا العنوان للطلبات المستقبلية',
+
+  // Payment
+  'payment_method': 'طريقة الدفع',
+  'credit_debit_card': 'بطاقة ائتمان/خصم',
+  'pay_with_card': 'ادفع بأمان باستخدام بطاقة الائتمان أو الخصم',
+  'cash_on_delivery': 'الدفع عند الاستلام',
+  'pay_on_delivery': 'ادفع عند استلام طلبك',
+  'card_details': 'تفاصيل البطاقة',
+  'card_number': 'رقم البطاقة',
+  'cardholder_name': 'اسم حامل البطاقة',
+  'expiry_date': 'تاريخ الانتهاء (شهر/سنة)',
+  'cvv': 'رمز التحقق',
+  'billing_same_as_shipping': 'عنوان الفواتير هو نفس عنوان الشحن',
+  'save_card': 'حفظ البطاقة للمشتريات المستقبلية',
+  'cash_on_delivery_info':
+      'ستدفع مقابل طلبك عند توصيله إلى عنوان الشحن الخاص بك.',
+
+  // Summary
+  'shipping_address': 'عنوان الشحن',
+  'order_items': 'عناصر الطلب',
+  'additional_note': 'ملاحظة إضافية',
+  'add_note': 'أضف ملاحظة حول طلبك (اختياري)',
+  'quantity_label': 'الكمية: @quantity',
+
+  // Order summary
+  'free': 'مجاني',
+
+  // Orders view
+  'no_orders_found': 'لا توجد طلبات',
+  'no_orders_yet': 'لم تقم بإجراء أي طلبات حتى الآن',
+
+  // Order filters
+  'filter_all': 'الكل',
+  'filter_pending': 'قيد الانتظار',
+  'filter_processing': 'قيد المعالجة',
+  'filter_shipped': 'تم الشحن',
+  'filter_delivered': 'تم التوصيل',
+  'filter_cancelled': 'ملغي',
+
+  // Order card
+  'order_number': 'طلب #@id',
+  'order_date': 'تم الطلب في @date',
+  'item_quantity_price': '@quantity× @price',
+  'more_items': '+ @count عناصر أخرى',
+  'total_label': 'الإجمالي:',
+  'total_price': '@price',
+  'cancel_button': 'إلغاء',
+  'details_button': 'التفاصيل',
+
+  // Order status
+  'status_pending': 'تم الطلب',
+  'status_processing': 'قيد المعالجة',
+  'status_shipped': 'تم الشحن',
+  'status_delivered': 'تم التوصيل',
+  'status_cancelled': 'ملغي',
+  'status_unknown': 'غير معروف',
+
+  // Cancel order dialog
+  'cancel_order_title': 'إلغاء الطلب',
+  'cancel_order_message':
+      'هل أنت متأكد أنك تريد إلغاء هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء.',
+  'yes_cancel_order': 'نعم، إلغاء الطلب',
+  'no_keep_order': 'لا، الاحتفاظ به',
+
+  // Address Edit
+  'save': 'حفظ',
+  'contact_information': 'معلومات الاتصال',
+  'address_details': 'تفاصيل العنوان',
+  'address_line_2_optional': 'سطر العنوان 2 (اختياري)',
+  'state_province_required': 'المنطقة/المحافظة*',
+  'postal_code_optional': 'الرمز البريدي (اختياري)',
+  'country_required': 'الدولة*',
+
+  // Wishlist
+  'my_wishlist': 'قائمة المفضلة',
+  'empty_wishlist_title': 'قائمة المفضلة فارغة',
+  'empty_wishlist_message': 'أضف العناصر التي تحبها إلى قائمة المفضلة',
+  'browse_products': 'تصفح المنتجات',
+  'remove': 'إزالة',
+  'view': 'عرض',
+
+  // messages
+  'Error adding to recently viewed':
+      'خطأ في إضافة إلى العناصر التي تمت مشاهدتها مؤخرًا',
+  'Account created successfully': 'تم إنشاء الحساب بنجاح',
+  'Please enter your email': 'الرجاء إدخال بريدك الإلكتروني',
+  'Please enter a valid email': 'الرجاء إدخال بريد إلكتروني صالح',
+  'Password reset email sent. Please check your inbox.':
+      'تم إرسال بريد إعادة تعيين كلمة المرور. يرجى التحقق من صندوق الوارد الخاص بك.',
+  'Error signing out. Please try again.':
+      'خطأ في تسجيل الخروج. يرجى المحاولة مرة أخرى.',
+  'Please fill all fields': 'الرجاء ملء جميع الحقول',
+  'Password must be at least 6 characters':
+      'يجب أن تكون كلمة المرور 6 أحرف على الأقل',
+  'Failed to load cart items': 'فشل في تحميل عناصر السلة',
+  'Failed to update quantity': 'فشل في تحديث الكمية',
+  'Item removed from cart': 'تمت إزالة العنصر من السلة',
+  'Failed to remove item': 'فشل في إزالة العنصر',
+  'Shopping bag cleared': 'تم تفريغ حقيبة التسوق',
+  'Failed to clear shopping bag': 'فشل في تفريغ حقيبة التسوق',
+  'Your cart is empty': 'سلة التسوق فارغة',
+  'Failed to add item to cart': 'فشل في إضافة العنصر إلى السلة',
+  'Failed to load checkout data': 'فشل في تحميل بيانات إتمام الشراء',
+  'Order placed successfully': 'تم تقديم الطلب بنجاح',
+  'Error loading addresses': 'خطأ في تحميل العناوين',
+  'Error saving address': 'خطأ في حفظ العنوان',
+  'Error fetching products': 'خطأ في جلب المنتجات',
+  'Please sign in to view your orders': 'يرجى تسجيل الدخول لعرض طلباتك',
+  'Error processing your orders': 'خطأ في معالجة طلباتك',
+  'Failed to load orders': 'فشل في تحميل الطلبات',
+  'Order details coming soon!': 'تفاصيل الطلب قادمة قريبًا!',
+  'Order cancelled successfully': 'تم إلغاء الطلب بنجاح',
+  'Failed to cancel order': 'فشل في إلغاء الطلب',
+  'Product not found': 'المنتج غير موجود',
+  'Error loading product': 'خطأ في تحميل المنتج',
+  'Error loading reviews': 'خطأ في تحميل التقييمات',
+  'Maximum available quantity reached':
+      'تم الوصول إلى الحد الأقصى للكمية المتاحة',
+  'Removed from favorites': 'تمت إزالته من المفضلة',
+  'Added to favorites': 'تمت إضافته إلى المفضلة',
+  'Product added to cart': 'تمت إضافة المنتج إلى السلة',
+  'Could not add product to cart': 'تعذر إضافة المنتج إلى السلة',
+  'Please select a rating before submitting': 'يرجى اختيار تقييم قبل الإرسال',
+  'Please enter your review text': 'يرجى إدخال نص التقييم الخاص بك',
+  'Your review has been submitted': 'تم إرسال تقييمك',
+  'Failed to submit review': 'فشل في إرسال التقييم',
+  'Failed to load addresses': 'فشل في تحميل العناوين',
+  'Address added successfully': 'تمت إضافة العنوان بنجاح',
+  'Address updated successfully': 'تم تحديث العنوان بنجاح',
+  'Address deleted successfully': 'تم حذف العنوان بنجاح',
+  'Failed to update address': 'فشل في تحديث العنوان',
+  'Please enter full name': 'الرجاء إدخال الاسم الكامل',
+  'Please enter phone number': 'الرجاء إدخال رقم الهاتف',
+  'Please enter a valid phone number': 'الرجاء إدخال رقم هاتف صالح',
+  'Please enter address line 1': 'الرجاء إدخال سطر العنوان 1',
+  'Please enter city': 'الرجاء إدخال المدينة',
+  'Please enter state': 'الرجاء إدخال المنطقة/الولاية',
+  'Please select a country': 'الرجاء اختيار الدولة',
+  'Default address updated': 'تم تحديث العنوان الافتراضي',
+  'Profile updated successfully': 'تم تحديث الملف الشخصي بنجاح',
+  'Failed to update profile': 'فشل في تحديث الملف الشخصي',
+  'Password updated successfully': 'تم تحديث كلمة المرور بنجاح',
+  'Failed to load settings': 'فشل في تحميل الإعدادات',
+  'Settings saved successfully': 'تم حفظ الإعدادات بنجاح',
+  'Failed to save settings': 'فشل في حفظ الإعدادات',
+  'Product is already in your wishlist':
+      'المنتج موجود بالفعل في قائمة المفضلة الخاصة بك',
+  'Product added to wishlist': 'تمت إضافة المنتج إلى قائمة المفضلة',
+  'Failed to add to wishlist': 'فشل في إضافة إلى قائمة المفضلة',
+  'Item removed from wishlist': 'تمت إزالة العنصر من قائمة المفضلة',
 };

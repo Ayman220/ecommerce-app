@@ -14,7 +14,7 @@ class OrdersView extends GetView<OrdersController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Orders'),
+        title: Text('my_orders'.tr),
         centerTitle: true,
         elevation: 0,
       ),
@@ -31,9 +31,9 @@ class OrdersView extends GetView<OrdersController> {
               if (controller.orders.isEmpty) {
                 return EmptyState(
                   icon: Icons.shopping_bag_outlined,
-                  title: 'No orders found',
-                  subtitle: 'You haven\'t placed any orders yet',
-                  buttonText: 'Start Shopping',
+                  title: 'no_orders_found'.tr,
+                  subtitle: 'no_orders_yet'.tr,
+                  buttonText: 'start_shopping'.tr,
                   onButtonPressed: () => Get.offAllNamed(Routes.home),
                 );
               }
@@ -63,12 +63,12 @@ class OrdersView extends GetView<OrdersController> {
       scrollDirection: Axis.horizontal,
       child: Obx(() => Row(
         children: [
-          _filterChip('All', 'all'),
-          _filterChip('Pending', 'pending'),
-          _filterChip('Processing', 'processing'),
-          _filterChip('Shipped', 'shipped'),
-          _filterChip('Delivered', 'delivered'),
-          _filterChip('Cancelled', 'cancelled'),
+          _filterChip('filter_all'.tr, 'all'),
+          _filterChip('filter_pending'.tr, 'pending'),
+          _filterChip('filter_processing'.tr, 'processing'),
+          _filterChip('filter_shipped'.tr, 'shipped'),
+          _filterChip('filter_delivered'.tr, 'delivered'),
+          _filterChip('filter_cancelled'.tr, 'cancelled'),
         ],
       )),
     );
@@ -128,7 +128,7 @@ class OrdersView extends GetView<OrdersController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Order #${order.id.substring(0, 8).toUpperCase()}',
+                        'order_number'.tr.replaceAll('@id', order.id.substring(0, 8).toUpperCase()),
                         style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 14,
@@ -136,7 +136,7 @@ class OrdersView extends GetView<OrdersController> {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        'Placed on ${DateFormat('MMM dd, yyyy').format(order.createdAt)}',
+                        'order_date'.tr.replaceAll('@date', DateFormat('MMM dd, yyyy').format(order.createdAt)),
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.grey[600],
@@ -181,7 +181,8 @@ class OrdersView extends GetView<OrdersController> {
                     style: const TextStyle(fontSize: 12),
                   ),
                   trailing: Text(
-                    '${item.quantity}x ${currencyFormatter.format(item.price)}',
+                    'item_quantity_price'.tr.replaceAll('@quantity', item.quantity.toString())
+                        .replaceAll('@price', currencyFormatter.format(item.price)),
                     style: const TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
@@ -196,7 +197,7 @@ class OrdersView extends GetView<OrdersController> {
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
                 child: Text(
-                  '+ ${order.items.length - 2} more items',
+                  'more_items'.tr.replaceAll('@count', (order.items.length - 2).toString()),
                   style: TextStyle(
                     fontSize: 12,
                     color: Get.theme.colorScheme.primary,
@@ -220,12 +221,12 @@ class OrdersView extends GetView<OrdersController> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Total:',
-                        style: TextStyle(fontSize: 12),
+                      Text(
+                        'total_label'.tr,
+                        style: const TextStyle(fontSize: 12),
                       ),
                       Text(
-                        currencyFormatter.format(order.total),
+                        'total_price'.tr.replaceAll('@price', currencyFormatter.format(order.total)),
                         style: const TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 16,
@@ -245,7 +246,7 @@ class OrdersView extends GetView<OrdersController> {
                             side: const BorderSide(color: Colors.red),
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                           ),
-                          child: const Text('Cancel'),
+                          child: Text('cancel_button'.tr),
                         ),
                       const SizedBox(width: 8),
                       FilledButton.tonal(
@@ -253,7 +254,7 @@ class OrdersView extends GetView<OrdersController> {
                         style: FilledButton.styleFrom(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                         ),
-                        child: const Text('Details'),
+                        child: Text('details_button'.tr),
                       ),
                     ],
                   ),
@@ -327,17 +328,17 @@ class OrdersView extends GetView<OrdersController> {
   String _getStatusLabel(String status) {
     switch (status.toLowerCase()) {
       case 'pending':
-        return 'Order Placed';
+        return 'status_pending'.tr;
       case 'processing':
-        return 'Processing';
+        return 'status_processing'.tr;
       case 'shipped':
-        return 'Shipped';
+        return 'status_shipped'.tr;
       case 'delivered':
-        return 'Delivered';
+        return 'status_delivered'.tr;
       case 'cancelled':
-        return 'Cancelled';
+        return 'status_cancelled'.tr;
       default:
-        return 'Unknown';
+        return 'status_unknown'.tr;
     }
   }
   
@@ -358,16 +359,16 @@ class OrdersView extends GetView<OrdersController> {
                 size: 48,
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Cancel Order',
-                style: TextStyle(
+              Text(
+                'cancel_order_title'.tr,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 8),
-              const Text(
-                'Are you sure you want to cancel this order? This action cannot be undone.',
+              Text(
+                'cancel_order_message'.tr,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
@@ -384,12 +385,12 @@ class OrdersView extends GetView<OrdersController> {
                     style: FilledButton.styleFrom(
                       backgroundColor: Colors.red,
                     ),
-                    child: const Text('Yes, Cancel Order'),
+                    child: Text('yes_cancel_order'.tr),
                   ),
                   const SizedBox(height: 12),
                   OutlinedButton(
                     onPressed: () => Get.back(),
-                    child: const Text('No, Keep It'),
+                    child: Text('no_keep_order'.tr),
                   ),
                 ],
               ),

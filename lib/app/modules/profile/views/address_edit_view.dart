@@ -22,7 +22,7 @@ class AddressEditView extends GetView<ProfileController> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(address == null ? 'Add New Address' : 'Edit Address'),
+        title: Text(address == null ? 'add_new_address'.tr : 'edit_address'.tr),
         centerTitle: true,
         elevation: 0,
         actions: [
@@ -45,7 +45,7 @@ class AddressEditView extends GetView<ProfileController> {
                     }
                   },
                   icon: const Icon(Icons.check),
-                  tooltip: 'Save',
+                  tooltip: 'save'.tr,
                 )),
         ],
       ),
@@ -55,9 +55,9 @@ class AddressEditView extends GetView<ProfileController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Contact Information',
-                style: TextStyle(
+              Text(
+                'contact_information'.tr,
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -65,25 +65,25 @@ class AddressEditView extends GetView<ProfileController> {
               const SizedBox(height: 12),
               TextField(
                 controller: controller.fullNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Full Name*',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: 'full_name_required'.tr,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 12),
               TextField(
                 controller: controller.addressPhoneController,
-                decoration: const InputDecoration(
-                  labelText: 'Phone Number*',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: '${'phone_number'.tr}*',
+                  border: const OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.phone,
               ),
 
               const SizedBox(height: 24),
-              const Text(
-                'Address Details',
-                style: TextStyle(
+              Text(
+                'address_details'.tr,
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -91,41 +91,41 @@ class AddressEditView extends GetView<ProfileController> {
               const SizedBox(height: 12),
               TextField(
                 controller: controller.addressLine1Controller,
-                decoration: const InputDecoration(
-                  labelText: 'Address Line 1*',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: 'address_line_1_required'.tr,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 12),
               TextField(
                 controller: controller.addressLine2Controller,
-                decoration: const InputDecoration(
-                  labelText: 'Address Line 2 (Optional)',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: 'address_line_2_optional'.tr,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 12),
               TextField(
                 controller: controller.cityController,
-                decoration: const InputDecoration(
-                  labelText: 'City*',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: 'city_required'.tr,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 12),
               TextField(
                 controller: controller.stateController,
-                decoration: const InputDecoration(
-                  labelText: 'State/Province*',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: 'state_province_required'.tr,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 12),
               TextField(
                 controller: controller.postalCodeController,
-                decoration: const InputDecoration(
-                  labelText: 'Postal/ZIP Code (Optional)',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: 'postal_code_optional'.tr,
+                  border: const OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.text,
               ),
@@ -134,9 +134,9 @@ class AddressEditView extends GetView<ProfileController> {
               // Country dropdown
               DropdownButtonFormField<String>(
                 value: controller.selectedCountryCode.value,
-                decoration: const InputDecoration(
-                  labelText: 'Country*',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: 'country_required'.tr,
+                  border: const OutlineInputBorder(),
                 ),
                 isExpanded: true,
                 items: controller.countries.map((country) {
@@ -173,7 +173,7 @@ class AddressEditView extends GetView<ProfileController> {
 
               const SizedBox(height: 24),
               Obx(() => SwitchListTile(
-                    title: Text('set_default'.tr),
+                    title: Text('set_as_default'.tr),
                     value: controller.setAsDefault.value,
                     onChanged: (value) {
                       controller.setAsDefault.value = value;

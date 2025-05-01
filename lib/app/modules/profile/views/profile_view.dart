@@ -10,7 +10,7 @@ class ProfileView extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Profile'),
+        title: Text('my_profile'.tr),
         centerTitle: true,
         elevation: 0,
       ),
@@ -82,7 +82,7 @@ class ProfileView extends GetView<ProfileController> {
         ),
         const SizedBox(height: 16),
         Obx(() => Text(
-              controller.userData['name'] ?? 'User',
+              controller.userData['name'] ?? 'user'.tr,
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -104,9 +104,9 @@ class ProfileView extends GetView<ProfileController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text(
-          'Personal Information',
-          style: TextStyle(
+        Text(
+          'personal_information'.tr,
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -114,30 +114,30 @@ class ProfileView extends GetView<ProfileController> {
         const SizedBox(height: 16),
         TextField(
           controller: controller.nameController,
-          decoration: const InputDecoration(
-            labelText: 'Full Name',
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(Icons.person_outline),
+          decoration: InputDecoration(
+            labelText: 'full_name'.tr,
+            border: const OutlineInputBorder(),
+            prefixIcon: const Icon(Icons.person_outline),
           ),
         ),
         const SizedBox(height: 16),
         TextField(
           controller: controller.emailController,
           readOnly: true, // Email can't be changed directly
-          decoration: const InputDecoration(
-            labelText: 'Email',
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(Icons.email_outlined),
-            suffixIcon: Icon(Icons.lock_outline, size: 16),
+          decoration: InputDecoration(
+            labelText: 'email'.tr,
+            border: const OutlineInputBorder(),
+            prefixIcon: const Icon(Icons.email_outlined),
+            suffixIcon: const Icon(Icons.lock_outline, size: 16),
           ),
         ),
         const SizedBox(height: 16),
         TextField(
           controller: controller.phoneController,
-          decoration: const InputDecoration(
-            labelText: 'Phone Number',
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(Icons.phone_outlined),
+          decoration: InputDecoration(
+            labelText: 'phone_number'.tr,
+            border: const OutlineInputBorder(),
+            prefixIcon: const Icon(Icons.phone_outlined),
           ),
           keyboardType: TextInputType.phone,
         ),
@@ -156,7 +156,7 @@ class ProfileView extends GetView<ProfileController> {
                         strokeWidth: 2,
                       ),
                     )
-                  : const Text('Save Changes'),
+                  : Text('save_changes'.tr),
             )),
       ],
     );
@@ -166,9 +166,9 @@ class ProfileView extends GetView<ProfileController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text(
-          'Security',
-          style: TextStyle(
+        Text(
+          'security'.tr,
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -177,7 +177,7 @@ class ProfileView extends GetView<ProfileController> {
         OutlinedButton.icon(
           onPressed: controller.changePassword,
           icon: const Icon(Icons.lock_outline),
-          label: const Text('Change Password'),
+          label: Text('change_password'.tr),
           style: OutlinedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 12),
           ),
@@ -193,9 +193,9 @@ class ProfileView extends GetView<ProfileController> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              'Saved Addresses',
-              style: TextStyle(
+            Text(
+              'saved_addresses'.tr,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -203,7 +203,7 @@ class ProfileView extends GetView<ProfileController> {
             TextButton.icon(
               onPressed: () => controller.navigateToAddressEdit(),
               icon: const Icon(Icons.add),
-              label: const Text('Add New'),
+              label: Text('add_new'.tr),
             ),
           ],
         ),
@@ -221,13 +221,13 @@ class ProfileView extends GetView<ProfileController> {
           }
 
           if (controller.addresses.isEmpty) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: Center(
                 child: Text(
-                  'No saved addresses yet.\nAdd your first address to get started.',
+                  'no_saved_addresses'.tr,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey),
+                  style: const TextStyle(color: Colors.grey),
                 ),
               ),
             );
@@ -274,7 +274,7 @@ class ProfileView extends GetView<ProfileController> {
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(
-                                'Default',
+                                'default'.tr,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Get.theme.primaryColor,
@@ -295,20 +295,20 @@ class ProfileView extends GetView<ProfileController> {
                               }
                             },
                             itemBuilder: (context) => [
-                              const PopupMenuItem(
+                              PopupMenuItem(
                                 value: 'edit',
-                                child: Text('Edit'),
+                                child: Text('edit'.tr),
                               ),
                               if (!address.isDefault)
-                                const PopupMenuItem(
+                                PopupMenuItem(
                                   value: 'default',
-                                  child: Text('Set as default'),
+                                  child: Text('set_as_default'.tr),
                                 ),
-                              const PopupMenuItem(
+                              PopupMenuItem(
                                 value: 'delete',
                                 child: Text(
-                                  'Delete',
-                                  style: TextStyle(color: Colors.red),
+                                  'delete'.tr,
+                                  style: const TextStyle(color: Colors.red),
                                 ),
                               ),
                             ],
@@ -344,14 +344,12 @@ class ProfileView extends GetView<ProfileController> {
   void _showDeleteConfirmation(String addressId) {
     Get.dialog(
       AlertDialog(
-        title: const Text('Delete Address'),
-        content: const Text(
-          'Are you sure you want to delete this address? This action cannot be undone.',
-        ),
+        title: Text('delete_address'.tr),
+        content: Text('delete_address_confirmation'.tr),
         actions: [
           TextButton(
             onPressed: () => Get.back(),
-            child: const Text('Cancel'),
+            child: Text('cancel'.tr),
           ),
           ElevatedButton(
             onPressed: () {
@@ -362,7 +360,7 @@ class ProfileView extends GetView<ProfileController> {
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Delete'),
+            child: Text('delete'.tr),
           ),
         ],
       ),

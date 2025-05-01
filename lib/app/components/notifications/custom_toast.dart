@@ -45,7 +45,7 @@ class CustomToast {
   /// Shows error toast message
   static void error(String message, {IconData? icon, Duration? duration, bool useGetX = true}) {
     show(
-      message: message,
+      message: message.tr,
       type: ToastType.error,
       icon: icon ?? Icons.error_outline,
       duration: duration ?? const Duration(seconds: 3),
@@ -56,7 +56,7 @@ class CustomToast {
   /// Shows info toast message
   static void info(String message, {IconData? icon, Duration? duration, bool useGetX = true}) {
     show(
-      message: message,
+      message: message.tr,
       type: ToastType.info,
       icon: icon ?? Icons.info_outline,
       duration: duration ?? const Duration(seconds: 3),
@@ -67,7 +67,7 @@ class CustomToast {
   /// Shows warning toast message
   static void warning(String message, {IconData? icon, Duration? duration, bool useGetX = true}) {
     show(
-      message: message,
+      message: message.tr,
       type: ToastType.warning,
       icon: icon ?? Icons.warning_amber_outlined,
       duration: duration ?? const Duration(seconds: 3),
@@ -145,7 +145,7 @@ class CustomToast {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              message,
+              message.tr,
               style: TextStyle(
                 color: textColor,
                 fontSize: 14,
@@ -199,7 +199,7 @@ class CustomToast {
     final backgroundColor = _getColor(type);
     
     Fluttertoast.showToast(
-      msg: message,
+      msg: message.tr,
       toastLength: Toast.LENGTH_LONG,
       gravity: gravity,
       timeInSecForIosWeb: duration.inSeconds,

@@ -1,8 +1,8 @@
 import 'package:ecommerce_app/app/components/loading_indicator.dart';
+import 'package:ecommerce_app/app/modules/settings/controllers/settings_controller.dart';
 import 'package:ecommerce_app/app/widgets/keyboard_dismisser.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/settings_controller.dart';
 
 class SettingsView extends GetView<SettingsController> {
   const SettingsView({Key? key}) : super(key: key);
@@ -12,7 +12,7 @@ class SettingsView extends GetView<SettingsController> {
     return KeyboardDismisser(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Settings'),
+          title: Text('settings'.tr),
           elevation: 0,
         ),
         body: Obx(() {
@@ -117,21 +117,21 @@ class SettingsView extends GetView<SettingsController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionHeader('About'),
-        const ListTile(
-          title: Text('App Version'),
-          subtitle: Text('1.0.0'),
-          trailing: Icon(Icons.info_outline),
+        _buildSectionHeader('about'.tr),
+        ListTile(
+          title: Text('app_version'.tr),
+          subtitle: const Text('1.0.0'),
+          trailing: const Icon(Icons.info_outline),
         ),
         ListTile(
-          title: const Text('Privacy Policy'),
+          title: Text('privacy_policy'.tr),
           trailing: const Icon(Icons.chevron_right),
           onTap: () {
             // Open privacy policy screen or web page
           },
         ),
         ListTile(
-          title: const Text('Terms of Service'),
+          title: Text('terms_of_service'.tr),
           trailing: const Icon(Icons.chevron_right),
           onTap: () {
             // Open terms of service screen or web page
@@ -205,7 +205,10 @@ class SettingsView extends GetView<SettingsController> {
   }
 
   void _showLanguagePicker() {
-    final languages = ['English', 'Arabic'];
+    final languages = [
+      {'code': 'en_US', 'name': 'english'.tr},
+      {'code': 'ar_SA', 'name': 'arabic'.tr}
+    ];
 
     Get.bottomSheet(
       Container(
@@ -243,15 +246,16 @@ class SettingsView extends GetView<SettingsController> {
               itemBuilder: (context, index) {
                 final language = languages[index];
                 return ListTile(
-                  title: Text(language),
-                  trailing: controller.language.value == language
+                  title: Text(language['name']!),
+                  trailing: controller.language.value == language['name']
                       ? Icon(
                           Icons.check,
                           color: Get.theme.colorScheme.primary,
                         )
                       : null,
                   onTap: () {
-                    controller.setLanguage(language);
+                    controller.setLanguage(language['name']!);
+                    Get.updateLocale(Locale(language['code']!.split('_')[0], language['code']!.split('_')[1]));
                     Get.back();
                   },
                 );

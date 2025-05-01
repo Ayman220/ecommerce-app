@@ -15,7 +15,7 @@ class CheckoutView extends GetView<CheckoutController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Checkout'),
+        title: Text('checkout'.tr),
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
@@ -167,13 +167,13 @@ class CheckoutView extends GetView<CheckoutController> {
   String _getStepLabel(int index) {
     switch (index) {
       case 0:
-        return 'Cart';
+        return 'cart'.tr;
       case 1:
-        return 'Shipping';
+        return 'shipping'.tr;
       case 2:
-        return 'Payment';
+        return 'payment'.tr;
       case 3:
-        return 'Summary';
+        return 'summary'.tr;
       default:
         return '';
     }
@@ -184,7 +184,9 @@ class CheckoutView extends GetView<CheckoutController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '${controller.cartItems.length} ${controller.cartItems.length == 1 ? 'Item' : 'Items'}',
+          controller.cartItems.length == 1
+              ? '${controller.cartItems.length} ${'cart_item_single'.tr}'
+              : '${controller.cartItems.length} ${'cart_items_plural'.tr}',
           style: Get.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w500,
           ),
@@ -229,7 +231,6 @@ class CheckoutView extends GetView<CheckoutController> {
                     children: [
                       Text(
                         item.name,
-                        style: Get.textTheme.titleSmall,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -239,23 +240,26 @@ class CheckoutView extends GetView<CheckoutController> {
                           padding: const EdgeInsets.only(bottom: 4),
                           child: Text(
                             [
-                              if (item.size != null) 'Size: ${item.size}',
-                              if (item.color != null) 'Color: ${item.color}',
+                              if (item.size != null)
+                                '${'size'.tr}: ${item.size}',
+                              if (item.color != null)
+                                '${'color'.tr}: ${item.color}',
                             ].join(' • '),
-                            style: Get.textTheme.bodySmall,
                           ),
                         ),
                       Row(
                         children: [
                           Text(
-                            '\$${item.price.toStringAsFixed(2)}',
+                            'product_price'.tr.replaceAll(
+                                '@price', item.price.toStringAsFixed(2)),
                             style: Get.textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                           const Spacer(),
                           Text(
-                            'Qty: ${item.quantity}',
+                            'quantity_label'.tr.replaceAll(
+                                '@quantity', item.quantity.toString()),
                             style: Get.textTheme.bodyMedium,
                           ),
                         ],
@@ -357,7 +361,7 @@ class CheckoutView extends GetView<CheckoutController> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your full name';
+                          return 'full_name_required'.tr;
                         }
                         return null;
                       },
@@ -1188,7 +1192,6 @@ class CheckoutView extends GetView<CheckoutController> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        // color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha((0.05 * 255).toInt()),

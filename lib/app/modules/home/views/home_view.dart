@@ -643,7 +643,7 @@ class HomeView extends GetView<HomeController> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
-                        '${product.discountPercentage?.toInt()}% OFF',
+                        '${product.discountPercentage?.toInt()}% ${'off'.tr}',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 10,
