@@ -17,7 +17,7 @@ class SettingsController extends GetxController {
   final RxBool isDarkMode = false.obs;
   final RxBool isNotificationsEnabled = true.obs;
   final RxString currency = 'USD'.obs;
-  final RxString language = 'English'.obs;
+  final RxString languageCode = 'en'.obs;
 
   // User reference for storing settings
   User? get currentUser => _authService.currentUser;
@@ -51,7 +51,7 @@ class SettingsController extends GetxController {
 
         isNotificationsEnabled.value = data['isNotificationsEnabled'] ?? true;
         currency.value = data['currency'] ?? 'USD';
-        language.value = data['language'] ?? 'English';
+        languageCode.value = data['languageCode'] ?? 'en';
       }
     } catch (e) {
       CustomToast.error('Failed to load settings');
@@ -74,7 +74,7 @@ class SettingsController extends GetxController {
           .set({
         'isNotificationsEnabled': isNotificationsEnabled.value,
         'currency': currency.value,
-        'language': language.value,
+        'languageCode': languageCode.value, // Store language code in Firestore
         'updatedAt': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
 
@@ -108,11 +108,11 @@ class SettingsController extends GetxController {
     saveSettings();
   }
 
-  void setLanguage(String lang) {
-    language.value = lang;
+  void setLanguage(String code) {
+    languageCode.value = code;
 
     // Apply the selected language to the app
-    if (lang == 'Arabic') {
+    if (code == 'ar') {
       Get.updateLocale(const Locale('ar', 'SA'));
       // Enable RTL for Arabic
       Get.find<ThemeService>().updateTextDirection(TextDirection.rtl);
@@ -123,7 +123,7 @@ class SettingsController extends GetxController {
     }
 
     // Save to local storage through ThemeService (for persistence across app sessions)
-    _themeService.saveLanguagePreference(lang);
+    _themeService.saveLanguagePreference(code);
 
     // Save to Firestore (for cross-device sync)
     saveSettings();
@@ -131,12 +131,12 @@ class SettingsController extends GetxController {
 
   void initializeLanguage() {
     // First check if we have a saved preference
-    final String savedLanguage = _themeService.languagePreference;
+    final String savedLanguageCode = _themeService.languagePreference;
 
-    if (savedLanguage.isNotEmpty) {
+    if (savedLanguageCode.isNotEmpty) {
       // Use saved preference
-      language.value = savedLanguage;
-      if (savedLanguage == 'Arabic') {
+      languageCode.value = savedLanguageCode;
+      if (savedLanguageCode == 'ar') {
         Get.updateLocale(const Locale('ar', 'SA'));
         Get.find<ThemeService>().updateTextDirection(TextDirection.rtl);
       } else {
@@ -148,14 +148,25 @@ class SettingsController extends GetxController {
       final String systemLocale = Get.deviceLocale?.languageCode ?? 'en';
 
       if (systemLocale == 'ar') {
-        language.value = 'Arabic';
+        languageCode.value = 'ar';
         Get.updateLocale(const Locale('ar', 'SA'));
         Get.find<ThemeService>().updateTextDirection(TextDirection.rtl);
       } else {
-        language.value = 'English';
+        languageCode.value = 'en';
         Get.updateLocale(const Locale('en', 'US'));
         Get.find<ThemeService>().updateTextDirection(TextDirection.ltr);
       }
+    }
+  }
+
+  // Add helper method to get display name from code
+  String getLanguageDisplayName(String code) {
+    switch (code) {
+      case 'ar':
+        return 'arabic'.tr;
+      case 'en':
+      default:
+        return 'english'.tr;
     }
   }
 }

@@ -142,7 +142,7 @@ final Map<String, String> arSA = {
   'terms_of_service': 'شروط الخدمة',
   'select_currency': 'اختر العملة',
   'select_language': 'اختر اللغة',
-  'english': 'الإنجليزية',
+  'english': 'English',
   'arabic': 'العربية',
 
   // Error messages

@@ -74,7 +74,7 @@ class ThemeService extends GetxService {
 
   ThemeData getThemeData({bool isDark = false}) {
     final String currentLanguage = languagePreference;
-    final bool isArabic = currentLanguage == 'Arabic';
+    final bool isArabic = currentLanguage == 'ar';
     
     if (isDark) {
       return AppTheme.getDarkTheme(forceArabic: isArabic);
@@ -84,24 +84,27 @@ class ThemeService extends GetxService {
   }
 
   // Save language preference to storage using Hive instead of GetStorage
-  Future<void> saveLanguagePreference(String language) async {
-    await _box.put(languageKey, language);
+  void saveLanguagePreference(String languageCode) {
+    // Save language code to local storage
+    _box.put('languageCode', languageCode);
   }
 
   // Get language preference from storage using Hive
   String get languagePreference {
-    return _box.get(languageKey, defaultValue: 'English') as String;
+    // Return language code instead of language name
+    return _box.get('languageCode', defaultValue: '');
   }
 
   // Additional method to fully load language preference on app start
   void loadLanguagePreference() {
-    String savedLanguage = languagePreference;
-    if (savedLanguage == 'Arabic') {
-      Get.updateLocale(const Locale('ar', 'SA'));
-      updateTextDirection(TextDirection.rtl);
-    } else {
-      Get.updateLocale(const Locale('en', 'US'));
-      updateTextDirection(TextDirection.ltr);
+    final String code = languagePreference;
+    if (code.isNotEmpty) {
+      // Update text direction based on language code
+      if (code == 'ar') {
+        updateTextDirection(TextDirection.rtl);
+      } else {
+        updateTextDirection(TextDirection.ltr);
+      }
     }
   }
 }

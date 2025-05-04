@@ -105,7 +105,7 @@ class SettingsView extends GetView<SettingsController> {
         ),
         ListTile(
           title: Text('language'.tr),
-          subtitle: Obx(() => Text(controller.language.value)),
+          subtitle: Obx(() => Text(controller.getLanguageDisplayName(controller.languageCode.value))),
           trailing: const Icon(Icons.chevron_right),
           onTap: _showLanguagePicker,
         ),
@@ -206,8 +206,8 @@ class SettingsView extends GetView<SettingsController> {
 
   void _showLanguagePicker() {
     final languages = [
-      {'code': 'en_US', 'name': 'english'.tr},
-      {'code': 'ar_SA', 'name': 'arabic'.tr}
+      {'code': 'en', 'name': 'english'.tr, 'flag': '🇺🇸'},
+      {'code': 'ar', 'name': 'arabic'.tr, 'flag': '🇸🇦'}
     ];
 
     Get.bottomSheet(
@@ -246,16 +246,19 @@ class SettingsView extends GetView<SettingsController> {
               itemBuilder: (context, index) {
                 final language = languages[index];
                 return ListTile(
+                  leading: Text(
+                    language['flag']!, 
+                    style: const TextStyle(fontSize: 20),
+                  ),
                   title: Text(language['name']!),
-                  trailing: controller.language.value == language['name']
+                  trailing: controller.languageCode.value == language['code']
                       ? Icon(
                           Icons.check,
                           color: Get.theme.colorScheme.primary,
                         )
                       : null,
                   onTap: () {
-                    controller.setLanguage(language['name']!);
-                    Get.updateLocale(Locale(language['code']!.split('_')[0], language['code']!.split('_')[1]));
+                    controller.setLanguage(language['code']!);
                     Get.back();
                   },
                 );

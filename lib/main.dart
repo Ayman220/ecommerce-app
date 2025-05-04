@@ -41,12 +41,12 @@ class MyApp extends StatelessWidget {
     final ThemeService themeService = Get.find<ThemeService>();
 
     // Get the saved language from ThemeService
-    final String savedLanguage = themeService.languagePreference;
-    
-    // Determine which locale to use based on saved language
+    final String savedLanguageCode = themeService.languagePreference;
+
+    // Determine which locale to use based on saved language code
     Locale? initialLocale;
-    if (savedLanguage.isNotEmpty) {
-      if (savedLanguage == 'Arabic') {
+    if (savedLanguageCode.isNotEmpty) {
+      if (savedLanguageCode == 'ar') {
         initialLocale = const Locale('ar', 'SA');
         // Pre-set text direction for Arabic to ensure proper initial rendering
         themeService.updateTextDirection(TextDirection.rtl);
@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
       },
       onInit: () {
         // Load language settings during app initialization
-        if (savedLanguage.isNotEmpty) {
+        if (savedLanguageCode.isNotEmpty) {
           themeService.loadLanguagePreference();
         }
       },

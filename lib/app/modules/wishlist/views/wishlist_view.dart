@@ -85,7 +85,6 @@ class WishlistView extends GetView<WishlistController> {
   }
   
   Widget _buildWishlistItemCard(item) {
-    print(item.toJson());
     final bool isOnSale = item.discountedPrice != null;
     
     return InkWell(

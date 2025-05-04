@@ -135,7 +135,8 @@ final Map<String, String> enUS = {
   'select_currency': 'Select Currency',
   'select_language': 'Select Language',
   'english': 'English',
-  'arabic': 'Arabic',
+  'arabic': 'العربية',
+  'terms_of_service': 'Terms of Service',
   
   // Address
   'address': 'Address',
