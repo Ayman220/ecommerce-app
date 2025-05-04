@@ -7,9 +7,14 @@ import 'package:ecommerce_app/app/routes/app_pages.dart';
 import 'package:ecommerce_app/firebase_options.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ecommerce_app/app/translations/app_translations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  // This is important for the splash screen
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  
+  // Keep the splash screen visible while app initializes
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   // Initialize Firebase
   await Firebase.initializeApp(
@@ -21,6 +26,9 @@ void main() async {
 
   // Initialize ThemeService after Hive is initialized
   await Get.putAsync(() => ThemeService().init());
+
+  // Remove the splash screen when initialization is complete
+  FlutterNativeSplash.remove();
 
   runApp(const MyApp());
 }

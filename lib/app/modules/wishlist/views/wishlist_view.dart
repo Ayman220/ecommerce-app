@@ -85,6 +85,7 @@ class WishlistView extends GetView<WishlistController> {
   }
   
   Widget _buildWishlistItemCard(item) {
+    print(item.toJson());
     final bool isOnSale = item.discountedPrice != null;
     
     return InkWell(
@@ -104,7 +105,7 @@ class WishlistView extends GetView<WishlistController> {
               placeholder: (context, url) => Container(
                 color: Colors.grey[200],
                 child: const Center(
-                  child: CircularProgressIndicator(strokeWidth: 2),
+                  child: LoadingIndicator(),
                 ),
               ),
               errorWidget: (context, url, error) => Container(

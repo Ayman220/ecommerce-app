@@ -12,23 +12,23 @@ import 'package:ecommerce_app/app/routes/app_pages.dart';
 class WishlistController extends GetxController {
   final AuthService _authService = Get.find<AuthService>();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  
+
   final RxList<WishlistItem> wishlistItems = <WishlistItem>[].obs;
   final RxBool isLoading = true.obs;
   StreamSubscription? _wishlistSubscription;
-  
+
   @override
   void onInit() {
     super.onInit();
     setupWishlistListener();
   }
-  
+
   @override
   void onClose() {
     _wishlistSubscription?.cancel();
     super.onClose();
   }
-  
+
   void setupWishlistListener() {
     final User? currentUser = _authService.currentUser;
     if (currentUser == null) {
@@ -36,56 +36,57 @@ class WishlistController extends GetxController {
       _showAuthRequiredMessage();
       return;
     }
-    
+
     try {
       isLoading.value = true;
-      
+
       // Set up real-time listener for wishlist changes
       _wishlistSubscription = _firestore
           .collection('users')
           .doc(currentUser.uid)
-          .collection('wishlist')
+          .collection('favorites')
           .orderBy('addedAt', descending: true)
           .snapshots()
           .listen((snapshot) {
-            final List<WishlistItem> items = snapshot.docs
-                .map((doc) => WishlistItem.fromFirestore(doc))
-                .toList();
-            
-            wishlistItems.value = items;
-            isLoading.value = false;
-          }, onError: (error) {
-            CustomToast.error('Error loading wishlist: ${error.toString()}');
-            isLoading.value = false;
-          });
+        final List<WishlistItem> items = snapshot.docs
+            .map((doc) => WishlistItem.fromFirestore(doc))
+            .toList();
+
+        wishlistItems.value = items;
+        isLoading.value = false;
+      }, onError: (error) {
+        CustomToast.error('Error loading wishlist: ${error.toString()}');
+        isLoading.value = false;
+      });
     } catch (e) {
       CustomToast.error('Failed to set up wishlist listener: ${e.toString()}');
       isLoading.value = false;
     }
   }
-  
-  Future<void> addToWishlist(String productId, Map<String, dynamic> productData) async {
+
+  Future<void> addToWishlist(
+      String productId, Map<String, dynamic> productData) async {
     final User? currentUser = _authService.currentUser;
     if (currentUser == null) {
       _showAuthRequiredMessage();
       return;
     }
-    
+
     try {
       // Check if product is already in wishlist
       final docRef = _firestore
           .collection('users')
           .doc(currentUser.uid)
-          .collection('wishlist')
+          .collection('favorites')
           .doc(productId);
-          
+
       final docSnapshot = await docRef.get();
-      
+
       if (docSnapshot.exists) {
         CustomToast.info('Product is already in your wishlist');
         return;
       }
-      
+
       // Add product to wishlist
       await docRef.set({
         'productId': productId,
@@ -96,89 +97,102 @@ class WishlistController extends GetxController {
         'isAvailable': productData['isAvailable'] ?? true,
         'addedAt': FieldValue.serverTimestamp(),
       });
-      
+
       CustomToast.success('Product added to wishlist');
     } catch (e) {
       CustomToast.error('Failed to add to wishlist: ${e.toString()}');
     }
   }
-  
+
   Future<bool> isProductInWishlist(String productId) async {
     final User? currentUser = _authService.currentUser;
     if (currentUser == null) return false;
-    
+
     try {
       final docSnapshot = await _firestore
           .collection('users')
           .doc(currentUser.uid)
-          .collection('wishlist')
+          .collection('favorites')
           .doc(productId)
           .get();
-          
+
       return docSnapshot.exists;
     } catch (e) {
       return false;
     }
   }
-  
+
   Future<void> removeFromWishlist(String itemId) async {
     final User? currentUser = _authService.currentUser;
     if (currentUser == null) return;
-    
+
     try {
       await _firestore
           .collection('users')
           .doc(currentUser.uid)
-          .collection('wishlist')
+          .collection('favorites')
           .doc(itemId)
           .delete();
-          
+
       CustomToast.success('Item removed from wishlist');
     } catch (e) {
       CustomToast.error('Failed to remove item: ${e.toString()}');
     }
   }
-  
-  Future<void> toggleWishlistStatus(String productId, Map<String, dynamic> productData) async {
+
+  Future<void> toggleWishlistStatus(
+      String productId, Map<String, dynamic> productData) async {
     final User? currentUser = _authService.currentUser;
     if (currentUser == null) {
       _showAuthRequiredMessage();
       return;
     }
-    
+    final docRef = _firestore
+        .collection('users')
+        .doc(currentUser.uid)
+        .collection('favorites')
+        .doc(productId);
+
     try {
-      final docRef = _firestore
-          .collection('users')
-          .doc(currentUser.uid)
-          .collection('wishlist')
-          .doc(productId);
-          
-      final docSnapshot = await docRef.get();
-      
-      if (docSnapshot.exists) {
+      final docSnapshot =
+          await docRef.get(const GetOptions(source: Source.server));
+      final data = docSnapshot.data();
+      final isValid = docSnapshot.exists &&
+          data != null &&
+          data.containsKey('productId') &&
+          data.containsKey('name') &&
+          data['name'] != null &&
+          data['name'].toString().trim().isNotEmpty;
+
+      if (isValid) {
         // Remove from wishlist
         await docRef.delete();
       } else {
-        // Add to wishlist
-        await docRef.set({
+        final dataToSave = {
           'productId': productId,
-          'name': productData['name'] ?? '',
+          'name': productData['name'] ?? 'Unnamed Product',
           'imageUrl': productData['images']?[0] ?? '',
-          'price': productData['price'] ?? 0.0,
-          'discountedPrice': productData['discountedPrice'],
+          'price': productData['price'] is num
+              ? (productData['price'] as num).toDouble()
+              : 0.0,
+          'discountedPrice': productData['discountedPrice'] is num
+              ? (productData['discountedPrice'] as num).toDouble()
+              : null,
           'isAvailable': productData['isAvailable'] ?? true,
           'addedAt': FieldValue.serverTimestamp(),
-        });
+        };
+
+        await docRef.set(dataToSave);
       }
     } catch (e) {
-      CustomToast.error('Failed to update wishlist: ${e.toString()}');
+      CustomToast.error('Failed to update wishlist');
     }
   }
-  
+
   void goToProductDetail(String productId) {
     Get.toNamed(Routes.productDetail, arguments: productId);
   }
-  
+
   void _showAuthRequiredMessage() {
     Future.delayed(const Duration(milliseconds: 300), () {
       Get.dialog(

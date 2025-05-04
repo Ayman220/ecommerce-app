@@ -33,6 +33,19 @@ class WishlistItem {
     };
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'productId': productId,
+      'name': name,
+      'imageUrl': imageUrl,
+      'price': price,
+      'discountedPrice': discountedPrice,
+      'isAvailable': isAvailable,
+      'addedAt': addedAt.millisecondsSinceEpoch,
+    };
+  }
+
   factory WishlistItem.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     

@@ -496,7 +496,6 @@ class HomeView extends GetView<HomeController> {
                       height: 48,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: Colors.white,
                         image: DecorationImage(
                           image: NetworkImage(category.imageUrl),
                           fit: BoxFit.cover,
@@ -510,9 +509,6 @@ class HomeView extends GetView<HomeController> {
                         fontSize: 12,
                         fontWeight:
                             isSelected ? FontWeight.bold : FontWeight.normal,
-                        color: isSelected
-                            ? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).textTheme.bodyMedium?.color,
                       ),
                       maxLines: 2,
                       textAlign: TextAlign.center,
@@ -885,7 +881,6 @@ class HomeView extends GetView<HomeController> {
     return BottomNavigationBar(
       currentIndex: 0,
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: Theme.of(Get.context!).colorScheme.primary,
       onTap: (index) {
         switch (index) {
           case 0: // Home - already here

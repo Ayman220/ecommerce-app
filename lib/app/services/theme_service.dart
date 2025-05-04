@@ -50,6 +50,7 @@ class ThemeService extends GetxService {
   Future<void> toggleDarkMode(bool isDark) async {
     final mode = isDark ? ThemeMode.dark : ThemeMode.light;
     await setThemeMode(mode);
+
   }
 
   Future<void> setUseSystemTheme(bool useSystem) async {
