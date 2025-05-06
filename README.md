@@ -110,31 +110,42 @@ Custom data models with Firebase integration:
 
 ### Product Browsing & Details
 <div align="center">
-  <img src="assets/screenshots/home_screen_dark.jpg" width="250" alt="Home Screen dark"/>
-  <img src="assets/screenshots/home_screen_light.jpg" width="250" alt="Home Screen light"/>
+  <img src="assets/screenshots/home_screen_dark.jpg" width="250" alt="Home Screen dark" style="margin-right: 15px;"/>
+  <img src="assets/screenshots/home_screen_light.jpg" width="250" alt="Home Screen light" style="margin-right: 15px;"/>
   <img src="assets/screenshots/product_details_screen.jpg" width="250" alt="Product Detail"/>
 </div>
 
+<br>
+
 ### Shopping & Order Management
 <div align="center">
-  <img src="assets/screenshots/cart_screen.jpg" width="250" alt="Shopping Cart"/>
-  <img src="assets/screenshots/checkout_screen_1.jpg" width="250" alt="Checkout Cart Summary Step"/>
+  <img src="assets/screenshots/cart_screen.jpg" width="250" alt="Shopping Cart" style="margin-right: 15px;"/>
+  <img src="assets/screenshots/checkout_screen_1.jpg" width="250" alt="Checkout Cart Summary Step" style="margin-right: 15px;"/>
   <img src="assets/screenshots/checkout_screen_2.jpg" width="250" alt="Checkout Shipping Step"/>
-  <img src="assets/screenshots/checkout_screen_3.jpg" width="250" alt="Checkout Payment Step"/>
-  <img src="assets/screenshots/checkout_screen_4.jpg" width="250" alt="Checkout Summary Step"/>
+</div>
+
+<br>
+
+<div align="center">
+  <img src="assets/screenshots/checkout_screen_3.jpg" width="250" alt="Checkout Payment Step" style="margin-right: 15px;"/>
+  <img src="assets/screenshots/checkout_screen_4.jpg" width="250" alt="Checkout Summary Step" style="margin-right: 15px;"/>
   <img src="assets/screenshots/orders_screen.jpg" width="250" alt="Order History"/>
 </div>
 
+<br>
+
 ### Localization
 <div align="center">
-  <img src="assets/screenshots/settings_screen_rtl.jpg" width="250" alt="Arabic RTL Interface"/>
+  <img src="assets/screenshots/settings_screen_rtl.jpg" width="250" alt="Arabic RTL Interface" style="margin-right: 15px;"/>
   <img src="assets/screenshots/settings_screen_ltr.jpg" width="250" alt="English LTR Interface"/>
 </div>
 
+<br>
+
 ### Account
 <div align="center">
-  <img src="assets/screenshots/favorites_screen.jpg" width="250" alt="favorites"/>
-  <img src="assets/screenshots/profile_screen.jpg" width="250" alt="User Profile"/>
+  <img src="assets/screenshots/favorites_screen.jpg" width="250" alt="favorites" style="margin-right: 15px;"/>
+  <img src="assets/screenshots/profile_screen.jpg" width="250" alt="User Profile" style="margin-right: 15px;"/>
   <img src="assets/screenshots/account_screen.jpg" width="250" alt="User Account"/>
 </div>
 
