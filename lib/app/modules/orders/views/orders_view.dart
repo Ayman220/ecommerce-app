@@ -83,7 +83,6 @@ class OrdersView extends GetView<OrdersController> {
         label: Text(label),
         selected: isSelected,
         onSelected: (_) => controller.setFilter(value),
-        backgroundColor: Colors.grey[200],
         selectedColor: Get.theme.colorScheme.primary.withAlpha((0.1 * 255).toInt()),
         labelStyle: TextStyle(
           color: isSelected 
@@ -92,6 +91,15 @@ class OrdersView extends GetView<OrdersController> {
           fontWeight: isSelected ? FontWeight.w500 : FontWeight.normal,
         ),
         checkmarkColor: Get.theme.colorScheme.primary,
+        side: BorderSide(
+          color: isSelected 
+              ? Get.theme.colorScheme.primary
+              : Get.theme.colorScheme.secondary.withAlpha((0.5 * 255).toInt()),
+          width: isSelected ? 1.5 : 1.0,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
       ),
     );
   }
@@ -104,7 +112,7 @@ class OrdersView extends GetView<OrdersController> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
         side: BorderSide(
-          color: Colors.grey[200]!,
+          color: Theme.of(Get.context!).colorScheme.primary,
         ),
       ),
       child: InkWell(
@@ -115,7 +123,7 @@ class OrdersView extends GetView<OrdersController> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: Colors.grey[50],
+                color: Theme.of(Get.context!).colorScheme.secondary.withAlpha((0.1 * 255).toInt()),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(8),
                   topRight: Radius.circular(8),
