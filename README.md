@@ -109,43 +109,52 @@ Custom data models with Firebase integration:
 ## Screenshots
 
 ### Product Browsing & Details
-<div align="center">
-  <img src="assets/screenshots/home_screen_dark.jpg" width="250" alt="Home Screen dark" style="margin-right: 15px;"/>
-  <img src="assets/screenshots/home_screen_light.jpg" width="250" alt="Home Screen light" style="margin-right: 15px;"/>
+<div align="center" style="display: flex; align-items: flex-start;">
+  <img src="assets/screenshots/home_screen_dark.jpg" width="250" alt="Home Screen dark"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/screenshots/home_screen_light.jpg" width="250" alt="Home Screen light"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/screenshots/product_details_screen.jpg" width="250" alt="Product Detail"/>
 </div>
 
 <br>
 
 ### Shopping & Order Management
-<div align="center">
-  <img src="assets/screenshots/cart_screen.jpg" width="250" alt="Shopping Cart" style="margin-right: 15px;"/>
-  <img src="assets/screenshots/checkout_screen_1.jpg" width="250" alt="Checkout Cart Summary Step" style="margin-right: 15px;"/>
+<div align="center" style="display: flex; align-items: flex-start;">
+  <img src="assets/screenshots/cart_screen.jpg" width="250" alt="Shopping Cart"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/screenshots/checkout_screen_1.jpg" width="250" alt="Checkout Cart Summary Step"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/screenshots/checkout_screen_2.jpg" width="250" alt="Checkout Shipping Step"/>
 </div>
 
 <br>
 
-<div align="center">
-  <img src="assets/screenshots/checkout_screen_3.jpg" width="250" alt="Checkout Payment Step" style="margin-right: 15px;"/>
-  <img src="assets/screenshots/checkout_screen_4.jpg" width="250" alt="Checkout Summary Step" style="margin-right: 15px;"/>
+<div align="center" style="display: flex; align-items: flex-start;">
+  <img src="assets/screenshots/checkout_screen_3.jpg" width="250" alt="Checkout Payment Step"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/screenshots/checkout_screen_4.jpg" width="250" alt="Checkout Summary Step"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/screenshots/orders_screen.jpg" width="250" alt="Order History"/>
 </div>
 
 <br>
 
 ### Localization
-<div align="center">
-  <img src="assets/screenshots/settings_screen_rtl.jpg" width="250" alt="Arabic RTL Interface" style="margin-right: 15px;"/>
-  <img src="assets/screenshots/settings_screen_ltr.jpg" width="250" alt="English LTR Interface"/>
+<div align="center" style="display: flex; align-items: flex-start;">
+  <img src="assets/screenshots/settings_screen_ar.jpg" width="250" alt="Arabic RTL Interface"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/screenshots/settings_screen_en.jpg" width="250" alt="English LTR Interface"/>
 </div>
 
 <br>
 
 ### Account
-<div align="center">
-  <img src="assets/screenshots/favorites_screen.jpg" width="250" alt="favorites" style="margin-right: 15px;"/>
-  <img src="assets/screenshots/profile_screen.jpg" width="250" alt="User Profile" style="margin-right: 15px;"/>
+<div align="center" style="display: flex; align-items: flex-start;">
+  <img src="assets/screenshots/favorites_screen.jpg" width="250" alt="favorites"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/screenshots/profile_screen.jpg" width="250" alt="User Profile"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/screenshots/account_screen.jpg" width="250" alt="User Account"/>
 </div>
 
