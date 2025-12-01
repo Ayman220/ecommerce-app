@@ -36,6 +36,8 @@ dependencies:
   country_picker: ^2.0.27
   flutter_native_splash: ^2.4.6
   flutter_launcher_icons: ^0.14.3
+  firebase_crashlytics: ^4.3.10
+  logger: ^2.6.2
 
 dev_dependencies:
   flutter_test:

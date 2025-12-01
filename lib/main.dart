@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/app/bindings/initial_binding.dart';
 import 'package:ecommerce_app/app/services/theme_service.dart';
+import 'package:ecommerce_app/app/utils/logging_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
@@ -8,11 +9,12 @@ import 'package:ecommerce_app/firebase_options.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ecommerce_app/app/translations/app_translations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'dart:ui';
 
 void main() async {
   // This is important for the splash screen
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Keep the splash screen visible while app initializes
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
@@ -20,6 +22,27 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Pass all uncaught Flutter errors to Crashlytics
+  FlutterError.onError = (FlutterErrorDetails details) {
+    LoggingService.error(
+      'Flutter Error',
+      error: details.exception,
+      stackTrace: details.stack,
+      fatal: true,
+    );
+  };
+
+  // Catch errors that occur outside Flutter framework
+  PlatformDispatcher.instance.onError = (error, stack) {
+    LoggingService.error(
+      'Platform Error',
+      error: error,
+      stackTrace: stack,
+      fatal: true,
+    );
+    return true;
+  };
 
   // Initialize Hive
   await Hive.initFlutter();
@@ -66,8 +89,10 @@ class MyApp extends StatelessWidget {
       getPages: AppPages.routes,
       debugShowCheckedModeBanner: false,
       translations: AppTranslations(),
-      locale: initialLocale ?? Get.deviceLocale, // Use saved locale if available, otherwise device locale
-      fallbackLocale: const Locale('en', 'US'), // Default locale if the device locale isn't supported
+      locale: initialLocale ??
+          Get.deviceLocale, // Use saved locale if available, otherwise device locale
+      fallbackLocale: const Locale(
+          'en', 'US'), // Default locale if the device locale isn't supported
       builder: (context, child) {
         // Wrap your app with a Directionality widget that uses the text direction from ThemeService
         return Directionality(

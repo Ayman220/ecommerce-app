@@ -7,6 +7,7 @@ import 'package:ecommerce_app/app/data/models/review_model.dart';
 import 'package:ecommerce_app/app/data/services/auth_service.dart';
 import 'package:ecommerce_app/app/data/services/product_service.dart';
 import 'package:ecommerce_app/app/modules/cart/controllers/cart_controller.dart';
+import 'package:ecommerce_app/app/utils/logging_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -145,7 +146,15 @@ class ProductController extends GetxController {
       reviews.value = reviewsData.docs
           .map((doc) => ReviewModel.fromFirestore(doc))
           .toList();
-    } catch (_) {
+    } catch (e, stackTrace) {
+      LoggingService.error(
+        'Failed to load reviews',
+        error: e,
+        stackTrace: stackTrace,
+        extras: {
+          'productId': productId,
+        },
+      );
       CustomToast.error('Error loading reviews');
     }
   }
@@ -322,8 +331,7 @@ class ProductController extends GetxController {
       final purchaseHistory = await FirebaseFirestore.instance
           .collection('orders')
           .where('userId', isEqualTo: currentUser.uid)
-          .where('status', whereIn: ['delivered', 'completed'])
-          .get();
+          .where('status', whereIn: ['delivered', 'completed']).get();
 
       bool hasPurchased = false;
 
@@ -379,7 +387,8 @@ class ProductController extends GetxController {
       String? userAvatar;
 
       if (userDoc.exists) {
-        userName = userDoc.data()?['name'] ?? currentUser.displayName ?? 'Anonymous';
+        userName =
+            userDoc.data()?['name'] ?? currentUser.displayName ?? 'Anonymous';
         userAvatar = userDoc.data()?['photoURL'] ?? currentUser.photoURL;
       }
 
@@ -398,14 +407,11 @@ class ProductController extends GetxController {
       await reviewRef.set(review.toMap());
 
       // Update product rating
-      final productRef = FirebaseFirestore.instance
-          .collection('products')
-          .doc(productId);
+      final productRef =
+          FirebaseFirestore.instance.collection('products').doc(productId);
 
       // Get all reviews to calculate new average
-      final allReviews = await productRef
-          .collection('reviews')
-          .get();
+      final allReviews = await productRef.collection('reviews').get();
 
       double totalRating = 0;
       for (var doc in allReviews.docs) {
@@ -414,7 +420,7 @@ class ProductController extends GetxController {
 
       double newAvgRating = totalRating / allReviews.docs.length;
       int newReviewCount = allReviews.docs.length;
-      
+
       // Update product with new rating and review count
       await productRef.update({
         'rating': newAvgRating,
@@ -431,11 +437,11 @@ class ProductController extends GetxController {
 
       // Refresh reviews
       _loadReviews();
-      
+
       // Reset review form
       reviewTextController.clear();
       reviewRating.value = 0;
-      
+
       // Update review eligibility
       hasReviewed.value = true;
       canReview.value = false;

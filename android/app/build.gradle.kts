@@ -33,11 +33,38 @@ android {
         versionName = flutter.versionName
     }
 
+    // Configure APK splitting by API level
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+            isUniversalApk = false
+        }
+        
+        density {
+            isEnable = true
+            exclude("ldpi", "mdpi", "xxxhdpi")
+            compatibleScreens("small", "normal", "large", "xlarge")
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+            
+            // Enable minification to reduce app size
+            isMinifyEnabled = true
+            // Enable resource shrinking to remove unused resources
+            isShrinkResources = true
+            
+            // Use the default Android ProGuard rules
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 }
